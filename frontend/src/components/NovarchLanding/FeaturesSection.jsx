@@ -1,54 +1,60 @@
 import React from 'react';
 import { featuresData } from '../../data/mock';
-import { Eye, Grid3X3, TrendingUp } from 'lucide-react';
-
-const iconMap = {
-  1: Eye,
-  2: Grid3X3,
-  3: TrendingUp
-};
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="relative py-32 md:py-40">
+    <section id="system" className="relative py-40 md:py-56 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/50 to-slate-950" />
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse at 20% 30%, rgba(20, 25, 45, 0.4) 0%, transparent 50%),
+            radial-gradient(ellipse at 90% 80%, rgba(25, 30, 50, 0.3) 0%, transparent 40%),
+            linear-gradient(180deg, #0a0b10 0%, #08090d 50%, #0a0b10 100%)
+          `
+        }}
+      />
       
-      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
-        {/* Section title */}
-        <div className="mb-20">
-          <h2 className="text-3xl md:text-4xl font-extralight text-white tracking-tight">
+      <div className="relative z-10 max-w-[1800px] mx-auto px-8 md:px-16 lg:px-24">
+        {/* Section title - asymmetric */}
+        <div className="mb-24 md:mb-32 lg:mb-40">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-extralight text-[#6a7080] tracking-[0.15em] uppercase">
             What Novarch does
           </h2>
         </div>
         
-        {/* Features grid */}
-        <div className="grid md:grid-cols-3 gap-12 md:gap-16">
-          {featuresData.map((feature, index) => {
-            const Icon = iconMap[feature.id];
-            return (
+        {/* Features - staggered layout */}
+        <div className="space-y-32 md:space-y-40 lg:space-y-48">
+          {featuresData.map((feature, index) => (
+            <div 
+              key={feature.id}
+              className={`grid lg:grid-cols-12 gap-8 ${
+                index % 2 === 0 ? '' : 'lg:text-right'
+              }`}
+            >
               <div 
-                key={feature.id}
-                className="group space-y-6 animate-fade-in-scroll"
-                style={{ animationDelay: `${index * 150}ms` }}
+                className={`lg:col-span-6 space-y-8 ${
+                  index % 2 === 0 ? 'lg:col-start-1' : 'lg:col-start-7'
+                }`}
               >
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-full border border-slate-700/50 flex items-center justify-center group-hover:border-slate-500/50 transition-colors duration-500">
-                  <Icon className="w-5 h-5 text-slate-400 group-hover:text-slate-200 transition-colors duration-500" />
+                {/* Feature number - very subtle */}
+                <div className="text-[11px] tracking-[0.3em] text-[#4a5060] uppercase font-light">
+                  0{feature.id}
                 </div>
                 
                 {/* Title */}
-                <h3 className="text-2xl font-light text-white tracking-tight">
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-extralight text-[#e8eaef] tracking-[-0.01em]">
                   {feature.title}
                 </h3>
                 
                 {/* Description */}
-                <p className="text-base text-slate-400 leading-relaxed font-light">
+                <p className="text-base md:text-lg text-[#6a7080] leading-[1.9] font-light tracking-wide max-w-md">
                   {feature.description}
                 </p>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>

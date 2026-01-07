@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
 import { earlyAccessData } from '../../data/mock';
-import { ArrowRight, Check } from 'lucide-react';
+import CosmicOrb from './CosmicOrb';
 
 const EarlyAccessSection = () => {
   const [email, setEmail] = useState('');
@@ -14,68 +12,72 @@ const EarlyAccessSection = () => {
     if (!email) return;
     
     setLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1200));
     setSubmitted(true);
     setLoading(false);
   };
 
   return (
-    <section id="early-access" className="relative py-32 md:py-40">
-      {/* Background with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/50 to-slate-950" />
+    <section id="early-access" className="relative py-48 md:py-64 lg:py-80 overflow-hidden">
+      {/* Background with central focus */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse at 50% 50%, rgba(25, 30, 50, 0.4) 0%, transparent 50%),
+            linear-gradient(180deg, #0c0e14 0%, #0a0b10 50%, #08090d 100%)
+          `
+        }}
+      />
       
-      {/* Center glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-slate-700/5 rounded-full blur-3xl" />
+      {/* Small orb echo - subtle reminder */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30 pointer-events-none">
+        <CosmicOrb size="small" />
+      </div>
       
-      <div className="relative z-10 max-w-2xl mx-auto px-6 md:px-12 text-center">
-        <div className="space-y-8 animate-fade-in-scroll">
+      <div className="relative z-10 max-w-[1800px] mx-auto px-8 md:px-16 lg:px-24">
+        <div className="max-w-2xl mx-auto text-center space-y-12">
           {/* Title */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extralight text-white tracking-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extralight text-[#e8eaef] tracking-[-0.01em] leading-[1.15]">
             {earlyAccessData.title}
           </h2>
           
           {/* Body */}
-          <p className="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
+          <p className="text-base md:text-lg text-[#6a7080] leading-[1.9] font-light tracking-wide">
             {earlyAccessData.body}
           </p>
           
           {/* Form */}
           <div className="pt-8">
             {!submitted ? (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <Input
+              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                <input
                   type="email"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-900/50 border-slate-700/50 text-white placeholder:text-slate-500 focus:border-slate-500 focus:ring-slate-500/20 h-12"
+                  className="flex-1 bg-transparent border border-[#2a2f40] text-[#e8eaef] placeholder:text-[#4a5060] px-6 py-4 text-[15px] tracking-wide font-light focus:outline-none focus:border-[#4a5060] transition-colors duration-500"
                 />
-                <Button 
+                <button 
                   type="submit"
                   disabled={loading}
-                  className="bg-white text-slate-900 hover:bg-slate-100 px-8 h-12 font-normal transition-all duration-300 hover:scale-105 whitespace-nowrap"
+                  className="group relative px-10 py-4 text-[13px] tracking-[0.2em] uppercase font-light overflow-hidden transition-all duration-500 bg-[#e8eaef] text-[#0a0b0f] hover:bg-white disabled:opacity-50"
                 >
                   {loading ? (
-                    <span className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
-                      Joining...
+                    <span className="flex items-center justify-center gap-3">
+                      <div className="w-3 h-3 border border-[#0a0b0f]/30 border-t-[#0a0b0f] rounded-full animate-spin" />
+                      <span>Joining</span>
                     </span>
                   ) : (
-                    <span className="flex items-center gap-2">
-                      {earlyAccessData.cta}
-                      <ArrowRight className="w-4 h-4" />
-                    </span>
+                    <span>Join</span>
                   )}
-                </Button>
+                </button>
               </form>
             ) : (
-              <div className="flex items-center justify-center gap-3 text-slate-300">
-                <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center">
-                  <Check className="w-5 h-5 text-green-400" />
-                </div>
-                <p className="text-lg font-light">You're on the list. We'll be in touch.</p>
+              <div className="flex items-center justify-center gap-4 text-[#a0a8b8]">
+                <div className="w-2 h-2 rounded-full bg-[#6a8060]" />
+                <p className="text-lg font-extralight tracking-wide">You're on the list. We'll be in touch.</p>
               </div>
             )}
           </div>

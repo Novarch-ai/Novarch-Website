@@ -1,50 +1,56 @@
 import React from 'react';
 import { foundersData } from '../../data/mock';
-import { MapPin } from 'lucide-react';
 
 const FoundersSection = () => {
   return (
-    <section id="founders" className="relative py-32 md:py-40">
+    <section id="team" className="relative py-40 md:py-56 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-slate-950" />
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse at 10% 80%, rgba(20, 25, 45, 0.3) 0%, transparent 40%),
+            linear-gradient(180deg, #08090d 0%, #0a0b10 50%, #0c0e14 100%)
+          `
+        }}
+      />
       
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12">
-        <div className="space-y-12 animate-fade-in-scroll">
-          {/* Title */}
-          <h2 className="text-3xl md:text-4xl font-extralight text-white tracking-tight">
-            {foundersData.title}
-          </h2>
+      <div className="relative z-10 max-w-[1800px] mx-auto px-8 md:px-16 lg:px-24">
+        <div className="grid lg:grid-cols-12 gap-20">
+          {/* Title column */}
+          <div className="lg:col-span-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extralight text-[#e8eaef] tracking-[-0.01em] leading-tight">
+              {foundersData.title}
+            </h2>
+          </div>
           
-          {/* Body */}
-          <p className="text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-2xl">
-            {foundersData.body}
-          </p>
-          
-          {/* Founders */}
-          <div className="pt-8 border-t border-slate-800/50">
-            <div className="flex flex-wrap gap-12">
-              {foundersData.founders.map((founder, index) => (
-                <div 
-                  key={index}
-                  className="space-y-2"
-                >
-                  <h4 className="text-xl font-light text-white">
-                    {founder.name}
-                  </h4>
-                  <p className="text-sm text-slate-500 flex items-center gap-2">
-                    <span>{founder.role}</span>
-                    {founder.location && (
-                      <>
-                        <span className="text-slate-700">·</span>
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          {founder.location}
-                        </span>
-                      </>
-                    )}
-                  </p>
-                </div>
-              ))}
+          {/* Content column */}
+          <div className="lg:col-span-6 lg:col-start-6 space-y-16">
+            {/* Body */}
+            <p className="text-base md:text-lg text-[#6a7080] leading-[1.9] font-light tracking-wide">
+              {foundersData.body}
+            </p>
+            
+            {/* Founders - minimal */}
+            <div className="pt-8 border-t border-[#1a1f2a]">
+              <div className="flex flex-wrap gap-16 md:gap-24">
+                {foundersData.founders.map((founder, index) => (
+                  <div 
+                    key={index}
+                    className="space-y-3"
+                  >
+                    <h4 className="text-xl md:text-2xl font-extralight text-[#e8eaef] tracking-wide">
+                      {founder.name}
+                    </h4>
+                    <p className="text-[13px] tracking-[0.15em] text-[#4a5060] uppercase font-light">
+                      {founder.role}
+                      {founder.location && (
+                        <span className="text-[#3a3f50]"> · {founder.location}</span>
+                      )}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
