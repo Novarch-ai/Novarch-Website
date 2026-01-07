@@ -8,6 +8,7 @@ import DifferenceSection from './DifferenceSection';
 import FoundersSection from './FoundersSection';
 import EarlyAccessSection from './EarlyAccessSection';
 import Footer from './Footer';
+import FilmGrain from './FilmGrain';
 
 const NovarchLanding = () => {
   const scrollToEarlyAccess = () => {
@@ -25,7 +26,11 @@ const NovarchLanding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="relative min-h-screen bg-[#08090d] text-[#e8eaef] overflow-x-hidden">
+      {/* Film grain overlay */}
+      <FilmGrain />
+      
+      {/* Main content */}
       <Header onEarlyAccess={scrollToEarlyAccess} />
       <HeroSection 
         onEarlyAccess={scrollToEarlyAccess} 

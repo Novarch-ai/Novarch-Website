@@ -10,7 +10,7 @@
 }
 
 .App-header {
-    background-color: #0f0f10;
+    background-color: #08090d;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -33,11 +33,74 @@
     }
 }
 
-/* Novarch Custom Animations */
-@keyframes fade-in {
+/* Novarch Cinematic Animations */
+
+/* Very slow breathing - for the orb */
+@keyframes breathe-slow {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.02);
+        opacity: 0.95;
+    }
+}
+
+@keyframes breathe-medium {
+    0%, 100% {
+        transform: scale(1.25);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.28);
+        opacity: 0.6;
+    }
+}
+
+/* Core pulse - subtle inner light */
+@keyframes core-pulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Fog drift - for plasma wisps */
+@keyframes fog-drift {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.15;
+    }
+    33% {
+        transform: scale(1.05) rotate(1deg);
+        opacity: 0.12;
+    }
+    66% {
+        transform: scale(0.98) rotate(-1deg);
+        opacity: 0.18;
+    }
+}
+
+/* Star twinkle */
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Fade in animations */
+@keyframes fade-in-slow {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -48,51 +111,73 @@
 @keyframes fade-in-delayed {
     0% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(20px) scale(0.98);
     }
-    30% {
+    40% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(20px) scale(0.98);
     }
     100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-@keyframes orb-glow {
-    0%, 100% {
-        filter: drop-shadow(0 0 20px rgba(148, 163, 184, 0.3));
-    }
-    50% {
-        filter: drop-shadow(0 0 40px rgba(148, 163, 184, 0.5));
-    }
+/* Animation classes */
+.animate-breathe-slow {
+    animation: breathe-slow 8s ease-in-out infinite;
 }
 
-.animate-fade-in {
-    animation: fade-in 1s ease-out forwards;
+.animate-breathe-medium {
+    animation: breathe-medium 6s ease-in-out infinite;
+}
+
+.animate-core-pulse {
+    animation: core-pulse 4s ease-in-out infinite;
+}
+
+.animate-fog-drift {
+    animation: fog-drift 12s ease-in-out infinite;
+}
+
+.animate-fade-in-slow {
+    animation: fade-in-slow 1.5s ease-out forwards;
 }
 
 .animate-fade-in-delayed {
-    animation: fade-in-delayed 1.5s ease-out forwards;
+    animation: fade-in-delayed 2.5s ease-out forwards;
 }
 
-.animate-orb-glow {
-    animation: orb-glow 4s ease-in-out infinite;
-}
-
-/* Scroll-triggered animations */
-.animate-fade-in-scroll {
-    animation: fade-in 0.8s ease-out forwards;
-}
-
-/* Smooth scrolling for the entire page */
+/* Smooth scrolling */
 html {
     scroll-behavior: smooth;
 }
 
-/* Custom selection color */
+/* Custom selection */
 ::selection {
-    background-color: rgba(148, 163, 184, 0.3);
-    color: white;
+    background-color: rgba(150, 165, 190, 0.2);
+    color: #e8eaef;
+}
+
+/* Hide scrollbar but allow scrolling */
+body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(60, 70, 90, 0.3) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(60, 70, 90, 0.3);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(80, 90, 110, 0.4);
 }
