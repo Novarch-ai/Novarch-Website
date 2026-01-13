@@ -119,14 +119,7 @@ const EarlyAccessSection = () => {
                     disabled={status === 'loading'}
                     className="px-8 py-3.5 text-[13px] tracking-[0.15em] uppercase font-normal transition-all duration-300 bg-[#f8f9fb] text-[#0c0d10] hover:bg-white disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {status === 'loading' ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <span className="w-3 h-3 border border-[#0c0d10]/30 border-t-[#0c0d10] rounded-full animate-spin" />
-                        <span>Joining</span>
-                      </span>
-                    ) : (
-                      <span>Join</span>
-                    )}
+                    {status === 'loading' ? 'Joining...' : 'Join'}
                   </button>
                 </div>
                 
@@ -138,12 +131,9 @@ const EarlyAccessSection = () => {
                 )}
               </form>
             ) : (
-              <div className="flex items-center justify-center gap-3 text-[#b8bdc6]">
-                <div className="w-2 h-2 rounded-full bg-[#6a8a6a]" />
-                <p className="text-base md:text-lg font-light tracking-wide">
-                  You're on the list. We'll reach out when it's ready.
-                </p>
-              </div>
+              <p className="text-base md:text-lg text-[#b8bdc6] font-light tracking-wide">
+                You're on the list. We'll reach out when it's ready.
+              </p>
             )}
           </div>
         </div>
