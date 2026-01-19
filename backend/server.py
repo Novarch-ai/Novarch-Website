@@ -10,6 +10,8 @@ from typing import List, Optional
 import uuid
 from datetime import datetime
 import httpx
+from emergentintegrations.llm.chat import LlmChat, UserMessage
+from novarch_prompt import NOVARCH_SYSTEM_PROMPT
 
 
 ROOT_DIR = Path(__file__).parent
