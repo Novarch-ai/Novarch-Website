@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import HeroSection from './HeroSection';
 import PhilosophySection from './PhilosophySection';
@@ -9,10 +10,9 @@ import FoundersSection from './FoundersSection';
 import EarlyAccessSection from './EarlyAccessSection';
 import Footer from './Footer';
 import FilmGrain from './FilmGrain';
-import ThinkingCompanion from './ThinkingCompanion';
 
 const NovarchLanding = () => {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const navigate = useNavigate();
 
   const scrollToEarlyAccess = () => {
     const element = document.getElementById('early-access');
@@ -47,19 +47,13 @@ const NovarchLanding = () => {
       <EarlyAccessSection />
       <Footer />
 
-      {/* Chat toggle button */}
+      {/* Chat entry button */}
       <button
-        onClick={() => setIsChatOpen(true)}
+        onClick={() => navigate('/chat')}
         className="fixed bottom-6 left-6 z-40 px-5 py-3 bg-[#1a1d24] border border-[#2a2f3d] text-[#a8aeb8] hover:text-[#f8f9fb] hover:border-[#3a3f4d] transition-all duration-300 text-[13px] tracking-wide font-light"
       >
         Think with Novarch
       </button>
-
-      {/* Thinking Companion Chat */}
-      <ThinkingCompanion 
-        isOpen={isChatOpen} 
-        onClose={() => setIsChatOpen(false)} 
-      />
     </div>
   );
 };
