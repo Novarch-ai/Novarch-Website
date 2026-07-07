@@ -1,0 +1,298 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+.pce-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(96, 165, 250, 0.16), transparent 32%),
+    radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.08), transparent 32%),
+    #030712;
+  color: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+}
+
+.pce-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px clamp(20px, 5vw, 72px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(3, 7, 18, 0.78);
+  backdrop-filter: blur(18px);
+}
+
+.pce-logo,
+.pce-header a {
+  color: #f8fafc;
+  text-decoration: none;
+}
+
+.pce-logo {
+  letter-spacing: 0.38em;
+  font-weight: 700;
+}
+
+.pce-header nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 34px);
+  font-size: 14px;
+}
+
+.pce-header nav a:last-child {
+  border: 1px solid rgba(125, 179, 255, 0.42);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.pce-hero,
+.pce-section,
+.pce-footer {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.pce-hero {
+  min-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 90px 0 70px;
+}
+
+.pce-kicker,
+.pce-label {
+  color: #7dd3fc;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pce-hero h1,
+.pce-section h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+  margin: 22px 0 0;
+}
+
+.pce-hero h1 {
+  max-width: 880px;
+  font-size: clamp(54px, 8vw, 104px);
+  line-height: 0.92;
+}
+
+.pce-hero p,
+.pce-section p,
+.pce-footer p {
+  color: #a7b3c7;
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.6;
+  max-width: 760px;
+  margin: 26px 0 0;
+}
+
+.pce-actions,
+.pce-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 38px;
+}
+
+.pce-primary,
+.pce-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  padding: 0 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.pce-primary {
+  color: #f8fafc;
+  background: linear-gradient(135deg, #2563eb, rgba(96, 165, 250, 0.82));
+  box-shadow: 0 22px 50px rgba(37, 99, 235, 0.22);
+}
+
+.pce-secondary {
+  color: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.34);
+  background: rgba(15, 23, 42, 0.36);
+}
+
+.pce-trust span {
+  border: 1px solid rgba(125, 179, 255, 0.2);
+  background: rgba(8, 17, 31, 0.64);
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #d5dcec;
+  font-size: 13px;
+}
+
+.pce-section {
+  padding: 86px 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.pce-grid,
+.pce-sprint {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+  gap: clamp(32px, 6vw, 82px);
+  align-items: start;
+}
+
+.pce-section h2 {
+  font-size: clamp(42px, 5.2vw, 76px);
+  line-height: 0.96;
+}
+
+.pce-card-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pce-card,
+.pce-price-card {
+  border: 1px solid rgba(125, 179, 255, 0.18);
+  background: rgba(8, 17, 31, 0.72);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+}
+
+.pce-card h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.pce-card p {
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.pce-flow {
+  margin-top: 38px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.pce-flow span {
+  padding: 14px 16px;
+  border: 1px solid rgba(125, 179, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(8, 17, 31, 0.76);
+  color: #e2e8f0;
+}
+
+.pce-flow i {
+  width: 28px;
+  height: 1px;
+  background: rgba(125, 179, 255, 0.44);
+}
+
+.pce-price {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 78px;
+  line-height: 0.9;
+  margin-bottom: 10px;
+}
+
+.pce-price-card ul {
+  margin: 24px 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.pce-price-card li {
+  color: #e2e8f0;
+}
+
+.pce-price-card li::before {
+  content: '->';
+  color: #7dd3fc;
+  margin-right: 10px;
+}
+
+.pce-muted {
+  font-size: 14px !important;
+  color: #8ea0b9 !important;
+}
+
+.pce-primary.full {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.pce-teardown {
+  text-align: center;
+}
+
+.pce-teardown p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pce-teardown .pce-primary {
+  margin-top: 30px;
+}
+
+.pce-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 44px 0 60px;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.pce-footer strong {
+  letter-spacing: 0.3em;
+}
+
+.pce-footer p {
+  font-size: 14px;
+  max-width: 620px;
+}
+
+.pce-footer a {
+  color: #bfdbfe;
+  text-decoration: none;
+}
+
+@media (max-width: 860px) {
+  .pce-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pce-header nav {
+    flex-wrap: wrap;
+  }
+
+  .pce-grid,
+  .pce-sprint {
+    grid-template-columns: 1fr;
+  }
+
+  .pce-card-list {
+    grid-template-columns: 1fr;
+  }
+
+  .pce-footer {
+    flex-direction: column;
+  }
+}

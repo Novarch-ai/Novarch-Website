@@ -1,8 +1,9 @@
-import React from "react";
+﻿import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NovarchLanding from "./components/NovarchLanding";
 import ChatPage from "./pages/ChatPage";
+import ProductContentEngine from "./components/ProductContentEngine";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<NovarchLanding />} />
           <Route path="/chat" element={<ChatPage />} />
+          <Route path="/product-content-engine" element={<ProductContentEngine />} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -18,3 +20,4 @@ function App() {
 }
 
 export default App;
+

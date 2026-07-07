@@ -1,10 +1,11 @@
-import React from 'react';
+﻿import React from 'react';
 import './NovarchV2.css';
 
 const CONTACT_EMAIL = 'novarch-ai@gmail.com';
 
 const navItems = [
   { label: 'Product', href: '#product' },
+  { label: 'Content Engine', href: '/product-content-engine' },
   { label: 'Solutions', href: '#solutions' },
   { label: 'Platform', href: '#platform' },
   { label: 'Pilot', href: '#pilot' },
@@ -50,9 +51,8 @@ const pilotTiers = [
 ];
 
 const teamMembers = [
-  { name: 'Mesum Abbas', role: 'Founder', focus: 'Product & System Architecture', initials: 'MA' },
-  { name: 'Melissa Pia Mehrla', role: 'Co-founder', focus: 'Operations & Business', initials: 'MM' },
-  { name: 'Ali Qasim', role: 'CTO', focus: 'Technical Lead', initials: 'AQ' },
+  { name: 'Mesum Abbas', role: 'Founder', focus: 'Product, Systems & Market Execution', initials: 'MA' },
+  { name: 'Melissa Pia Mehrle', role: 'Co-founder', focus: 'Operations & Business', initials: 'MM' },
 ];
 
 function Icon({ type }) {
@@ -350,7 +350,7 @@ function NovarchLanding() {
             <div className="hero-copy">
               <SectionLabel>AI workflow intelligence</SectionLabel>
               <h1>The AI operating layer for support workflows.</h1>
-              <p>NOVARCH turns scattered signals, conversations, and touchpoints into coordinated next actions — starting with university student-support teams.</p>
+              <p>NOVARCH turns scattered signals, conversations, and touchpoints into coordinated next actions â€” starting with university student-support teams.</p>
               <div className="hero-actions">
                 <a className="primary-btn" href="#platform">Explore Product <span aria-hidden="true">-></span></a>
                 <a className="secondary-btn" href={`mailto:${CONTACT_EMAIL}?subject=Conversation%20about%20NOVARCH`}>Request Conversation</a>
@@ -435,3 +435,4 @@ function NovarchLanding() {
 }
 
 export default NovarchLanding;
+
