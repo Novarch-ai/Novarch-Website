@@ -41,6 +41,9 @@ jobs:
       - name: Build frontend
         run: yarn build
 
+      - name: Add GitHub Pages SPA fallback
+        run: cp build/index.html build/404.html
+
       - name: Add custom domain
         run: echo "novarch.eu" > build/CNAME
 
@@ -48,7 +51,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/build
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
