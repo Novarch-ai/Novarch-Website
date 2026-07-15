@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './NovarchV2.css';
 
 const CONTACT_EMAIL = 'novarch-ai@gmail.com';
@@ -8,133 +8,177 @@ const mailto = (subject) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponen
 
 const copy = {
   de: {
-    path: '/',
     switchPath: '/en',
     switchLabel: 'EN',
     nav: [
-      ['Agent', '#agent'],
-      ['Sprint', '#sprint'],
-      ['Für wen', '#use-cases'],
-      ['Vision', '#vision'],
-      ['Team', '#team'],
+      ['Angebot', '#offer'],
+      ['Prozess', '#process'],
+      ['Für wen', '#for-whom'],
+      ['Kontakt', '#contact'],
     ],
-    cta: 'Review anfragen',
-    instagram: 'Auf Instagram schreiben',
-    emailSubject: 'Visibility Review Anfrage',
-    heroKicker: 'NOVARCH Visibility Agent',
-    heroTitle: 'Ihr Business braucht keine zufälligen Posts. Es braucht ein Sichtbarkeitssystem.',
-    heroText: 'NOVARCH hilft Marken, Creatorn und lokalen Unternehmen, klarer, sichtbarer und konsistenter online aufzutreten — mit Strategie, Content Assets und einem einfachen Execution Workflow.',
-    heroNote: 'Aus Deutschland aufgebaut. International gedacht. Für Unternehmen, die nicht nur posten, sondern sichtbar werden wollen.',
-    heroBadges: ['KI-gestützt', 'Menschlich geprüft', 'Umsetzungsorientiert'],
-    agentTitle: 'Der Visibility Agent findet, was Ihr Business besser zeigen sollte.',
-    agentText: 'Wir analysieren Ihr Angebot, Ihre Zielgruppe, Ihre vorhandenen Inhalte und Ihre ungenutzten Chancen. Daraus entsteht eine klare Richtung für Sichtbarkeit — nicht einfach ein Stapel zufälliger Content-Ideen.',
-    signals: ['Angebot & Wert', 'Zielgruppe', 'Website / Instagram', 'Bisherige Inhalte', 'Story & Positionierung', 'Ungenutzte Chancen'],
-    sprintTitle: '14-Day Visibility Sprint',
-    sprintIntro: 'In 14 Tagen bauen wir die erste nutzbare Version Ihres Sichtbarkeitssystems — mit echten Assets, klarer Richtung und einem einfachen Workflow.',
-    price: 'Pilot Sprint ab 499 €',
-    deliverables: ['Visibility Direction Map', 'Content Angles & Hooks', 'Ready-to-post Assets', 'Reel- / Video-Ideen', '14-Tage Postingplan', 'Execution Workflow', 'Review Call'],
-    processTitle: 'So läuft der Sprint ab.',
+    cta: 'Kurzanalyse buchen',
+    emailSubject: 'NOVARCH Kurzanalyse Anfrage',
+    heroSecondary: 'Wie es funktioniert ↓',
+    heroTitle: 'Sichtbarkeit, die zu Anfragen wird.',
+    heroText: 'NOVARCH macht aus dem, was Ihr Unternehmen bereits hat, einen klaren, professionellen Online-Auftritt — in 14 Tagen.',
+    heroNote: 'Aus Deutschland aufgebaut. International gedacht. Für lokale Unternehmen, Creator und founder-led Brands.',
+    problemEyebrow: 'Das Problem',
+    problemTitle: 'Sie haben bereits alles, was Sie brauchen.',
+    problemBody: 'Gute Arbeit, zufriedene Kunden, echte Expertise. Was fehlt, ist Klarheit darüber, wie man das online zeigt — konsistent, professionell, ohne jeden Tag neu zu überlegen, was man posten soll.',
+    problemStat: '14 Tage',
+    problemStatText: 'um aus vorhandenem Material eine klare Sichtbarkeitsrichtung und erste nutzbare Inhalte zu bauen.',
+    offerEyebrow: 'Das Angebot',
+    offerTitle: 'Der 14-Tage Sichtbarkeits-Sprint',
+    offerBody: 'Wir entwickeln eine klare Content-Richtung für Ihr Unternehmen, erstellen fertige Inhalte und begleiten Sie durch die ersten 14 Tage der Umsetzung.',
+    deliverables: [
+      ['01', 'Ein Erstgespräch zur Analyse Ihres aktuellen Auftritts'],
+      ['02', 'Eine klare, auf Ihr Unternehmen zugeschnittene Content-Richtung'],
+      ['03', 'Fertige Inhalte für 14 Tage'],
+      ['04', 'Ein einfacher Umsetzungsplan'],
+      ['05', 'Ein Abschlussgespräch mit den nächsten Schritten'],
+    ],
+    processEyebrow: 'Der Ablauf',
+    processTitle: 'Wie es funktioniert',
     process: [
-      ['01', 'Analyse', 'Wir verstehen Ihr Business, Ihre Ziele, Ihre Inhalte und Ihre aktuelle Online-Präsenz.'],
-      ['02', 'Richtung', 'Wir definieren, was sichtbar werden soll und warum es für Ihre Zielgruppe relevant ist.'],
-      ['03', 'Assets', 'Wir erstellen konkrete Inhalte, Hooks, Post-Ideen und umsetzbare Vorlagen.'],
-      ['04', 'Workflow', 'Sie bekommen einen einfachen 14-Tage-Plan und klare nächste Schritte.'],
+      ['01', 'Verstehen', 'Wir analysieren Ihr Unternehmen, Ihre Kunden und Ihren aktuellen Auftritt.'],
+      ['02', 'Ausrichten', 'Wir definieren, wofür Sie online stehen sollen und was Ihre Kunden verstehen müssen.'],
+      ['03', 'Umsetzen', 'Wir erstellen fertige Inhalte und begleiten Sie durch die ersten 14 Tage.'],
     ],
-    useTitle: 'Für lokale Unternehmen, Creator und internationale Brands.',
-    useText: 'Ilmenau, Thüringen und Deutschland sind unser erster Markt. Gleichzeitig ist NOVARCH international gedacht — auch für Online-Shops, DTC-Brands und founder-led Businesses außerhalb Deutschlands.',
-    useCases: [
-      ['Lokale Unternehmen', 'Für Dienstleister, Studios, Praxen, Cafés, Shops und lokale Marken, die online professioneller sichtbar werden wollen.'],
-      ['Creator & Founder', 'Für Menschen mit Angebot, Persönlichkeit oder Expertise, die klarer kommunizieren und konsistenter auftreten wollen.'],
-      ['E-Commerce / DTC', 'Für Produktmarken, die Produktseiten, Reviews, FAQs und bestehende Assets in Content und Workflows verwandeln wollen.'],
-    ],
-    proofTitle: 'Wir testen zuerst an NOVARCH selbst.',
-    proofText: 'Unsere eigene Sichtbarkeit wird mit demselben System aufgebaut, das wir für Kunden einsetzen: Analyse, Richtung, Content Assets, Workflow und Iteration. Das macht NOVARCH nicht nur zu einer Marke — sondern zum ersten Proof Case.',
-    visionTitle: 'Mehr als Content: NOVARCH baut Workflow-Systeme.',
-    visionText: 'Der Visibility Agent ist unser erster marktnaher Anwendungsfall. Langfristig entwickelt NOVARCH KI-gestützte Systeme, die verstreute Informationen, Signale und Gespräche in klare nächste Schritte verwandeln — für Menschen, Teams, Unternehmen und Institutionen.',
+    forWhomEyebrow: 'Für wen',
+    forWhomTitle: 'Für wen ist das?',
+    forWhomBody: 'Lokale Unternehmen, Gründer und Selbstständige, die online professioneller und konsistenter auftreten möchten — ohne selbst Marketing-Experte werden zu müssen.',
+    pills: ['Salons', 'Praxen', 'Gastronomie', 'Berater', 'Creator', 'DTC-Brands'],
+    pricingEyebrow: 'Preis',
+    pricingTitle: 'Sprint ab 499 €',
+    pricingBody: 'Begrenztes Pilotangebot für die ersten Unternehmen in der Region. Internationale Projekte und E-Commerce-/DTC-Anwendungsfälle werden passend zum Umfang kalkuliert.',
+    whyEyebrow: 'Warum NOVARCH',
+    whyTitle: 'Kein Marketing von der Stange.',
+    whyBody: 'Wir kommen nicht aus einer Marketing-Fabrik. Wir bauen für jedes Unternehmen ein eigenes System — auf Basis echter Recherche, echter Kundenaussagen und einer klaren Strategie, nicht aus generischen Vorlagen.',
+    visionTitle: 'Langfristig baut NOVARCH Workflow-Systeme.',
+    visionBody: 'Der Visibility Sprint ist der erste marktreife Anwendungsfall. Die größere Richtung bleibt: KI-gestützte Systeme, die verstreute Informationen, Signale und Gespräche in klare nächste Schritte verwandeln.',
     visionItems: ['Signals', 'Context', 'Next Actions', 'Follow-up', 'Execution'],
     teamTitle: 'Das Team hinter NOVARCH',
-    teamText: 'Ein kleines, internationales Gründungsteam mit technischem, operativem und produktorientiertem Fokus.',
-    contactTitle: 'Bereit, Ihr Business sichtbarer zu machen?',
-    contactText: 'Schreiben Sie uns für einen Visibility Review. Wir schauen uns Ihr Business an und zeigen, welche Sichtbarkeitschancen bereits vorhanden sind.',
+    teamBody: 'Ein kleines, internationales Team mit technischem, operativem und produktorientiertem Fokus.',
+    team: [
+      ['Mesum Abbas', 'Founder / Product & Systems', 'AI-Workflows, Sichtbarkeitssysteme und Marktausführung.'],
+      ['Melissa Pia Mehrle', 'Co-Founder / Operations & Business', 'Finance, Operations und Business-Struktur.'],
+      ['Qasim', 'Technology / Product Development', 'Software, Prototyping und technische Umsetzung.'],
+    ],
+    ctaTitle: 'Bereit für einen klareren Auftritt?',
     footerLine: 'Sichtbarkeitssysteme für Marken, Creator und lokale Unternehmen.',
-    legalNote: 'Impressum und Datenschutzerklärung werden für den öffentlichen Launch ergänzt. Kontakt aktuell über E-Mail oder Instagram.',
+    location: 'Ilmenau, Deutschland',
+    legalNote: 'Impressum und Datenschutz sind als Platzhalter verlinkt und müssen vor aktiver Kundengewinnung final ergänzt werden.',
   },
   en: {
-    path: '/en',
     switchPath: '/',
     switchLabel: 'DE',
     nav: [
-      ['Agent', '#agent'],
-      ['Sprint', '#sprint'],
-      ['Use cases', '#use-cases'],
-      ['Vision', '#vision'],
-      ['Team', '#team'],
+      ['Offer', '#offer'],
+      ['Process', '#process'],
+      ['For whom', '#for-whom'],
+      ['Contact', '#contact'],
     ],
-    cta: 'Request review',
-    instagram: 'Message on Instagram',
-    emailSubject: 'Visibility Review Request',
-    heroKicker: 'NOVARCH Visibility Agent',
-    heroTitle: 'Your business does not need random posts. It needs a visibility system.',
-    heroText: 'NOVARCH helps brands, creators and local businesses become clearer, more visible and more consistent online — with strategy, content assets and a simple execution workflow.',
-    heroNote: 'Built from Germany. Designed to work internationally. For businesses that want to be visible on purpose.',
-    heroBadges: ['AI-supported', 'Human-reviewed', 'Execution-focused'],
-    agentTitle: 'The Visibility Agent finds what your business should show better.',
-    agentText: 'We analyse your offer, audience, existing content and unused opportunities. Then we turn that into a practical visibility direction — not just a list of random content ideas.',
-    signals: ['Offer & value', 'Audience', 'Website / Instagram', 'Existing content', 'Story & positioning', 'Unused opportunities'],
-    sprintTitle: '14-Day Visibility Sprint',
-    sprintIntro: 'In 14 days, we build the first usable version of your visibility system — with real assets, clear direction and a simple workflow.',
-    price: 'Pilot Sprint from €499',
-    deliverables: ['Visibility Direction Map', 'Content Angles & Hooks', 'Ready-to-post Assets', 'Reel / video ideas', '14-day posting plan', 'Execution workflow', 'Review call'],
-    processTitle: 'How the sprint works.',
+    cta: 'Book a quick audit',
+    emailSubject: 'NOVARCH Visibility Audit Request',
+    heroSecondary: 'How it works ↓',
+    heroTitle: 'Visibility that turns into inquiries.',
+    heroText: 'NOVARCH turns what your business already has into a clear, professional online presence — in 14 days.',
+    heroNote: 'Built from Germany. Designed to work internationally. For local businesses, creators and founder-led brands.',
+    problemEyebrow: 'The problem',
+    problemTitle: 'You already have what you need.',
+    problemBody: 'Good work, happy customers, real expertise. What is missing is clarity on how to show it online — consistently, professionally, without having to rethink what to post every day.',
+    problemStat: '14 days',
+    problemStatText: 'to turn existing material into a clear visibility direction and first usable content assets.',
+    offerEyebrow: 'The offer',
+    offerTitle: 'The 14-Day Visibility Sprint',
+    offerBody: 'We develop a clear content direction for your business, create finished content assets and support you through the first 14 days of execution.',
+    deliverables: [
+      ['01', 'An initial call to analyse your current online presence'],
+      ['02', 'A clear content direction tailored to your business'],
+      ['03', 'Finished content assets for 14 days'],
+      ['04', 'A simple execution plan'],
+      ['05', 'A final review call with next steps'],
+    ],
+    processEyebrow: 'The process',
+    processTitle: 'How it works',
     process: [
-      ['01', 'Analyse', 'We understand your business, goals, content and current online presence.'],
-      ['02', 'Direction', 'We define what should become visible and why it matters to your audience.'],
-      ['03', 'Assets', 'We create concrete content, hooks, post ideas and usable templates.'],
-      ['04', 'Workflow', 'You receive a simple 14-day plan and clear next steps.'],
+      ['01', 'Understand', 'We analyse your business, customers and current online presence.'],
+      ['02', 'Align', 'We define what you should stand for online and what your customers need to understand.'],
+      ['03', 'Execute', 'We create finished content assets and support you through the first 14 days.'],
     ],
-    useTitle: 'For local businesses, creators and international brands.',
-    useText: 'Ilmenau, Thuringia and Germany are our first market. At the same time, NOVARCH is designed internationally — including ecommerce stores, DTC brands and founder-led businesses outside Germany.',
-    useCases: [
-      ['Local businesses', 'For service providers, studios, practices, cafés, shops and local brands that want a more professional online presence.'],
-      ['Creators & founders', 'For people with an offer, personality or expertise who want to communicate clearly and show up consistently.'],
-      ['Ecommerce / DTC', 'For product brands that want to turn product pages, reviews, FAQs and existing assets into content and workflows.'],
-    ],
-    proofTitle: 'We are testing it on NOVARCH first.',
-    proofText: 'Our own visibility is being built with the same system we use for clients: analysis, direction, content assets, workflow and iteration. NOVARCH is not only the brand — it is the first proof case.',
-    visionTitle: 'More than content: NOVARCH builds workflow systems.',
-    visionText: 'The Visibility Agent is our first market-facing use case. Long-term, NOVARCH is building AI-supported systems that turn scattered information, signals and conversations into clear next actions — for people, teams, businesses and institutions.',
+    forWhomEyebrow: 'For whom',
+    forWhomTitle: 'Who is this for?',
+    forWhomBody: 'Local businesses, founders and independent operators who want to show up more professionally and consistently online — without becoming marketing experts themselves.',
+    pills: ['Salons', 'Clinics', 'Restaurants', 'Consultants', 'Creators', 'DTC brands'],
+    pricingEyebrow: 'Price',
+    pricingTitle: 'Sprint from €499',
+    pricingBody: 'Limited pilot offer for the first businesses in the region. International and ecommerce / DTC projects are scoped based on the work required.',
+    whyEyebrow: 'Why NOVARCH',
+    whyTitle: 'Not generic marketing.',
+    whyBody: 'We do not work from a content factory. We build a dedicated system for every business — based on real research, real customer language and a clear strategy, not generic templates.',
+    visionTitle: 'Long-term, NOVARCH builds workflow systems.',
+    visionBody: 'The Visibility Sprint is the first market-ready use case. The larger direction remains: AI-supported systems that turn scattered information, signals and conversations into clear next actions.',
     visionItems: ['Signals', 'Context', 'Next Actions', 'Follow-up', 'Execution'],
     teamTitle: 'The team behind NOVARCH',
-    teamText: 'A small international founding team with technical, operational and product-focused depth.',
-    contactTitle: 'Ready to make your business more visible?',
-    contactText: 'Message us for a Visibility Review. We will look at your business and show what visibility opportunities are already there.',
+    teamBody: 'A small international team with technical, operational and product-focused depth.',
+    team: [
+      ['Mesum Abbas', 'Founder / Product & Systems', 'AI workflows, visibility systems and market execution.'],
+      ['Melissa Pia Mehrle', 'Co-Founder / Operations & Business', 'Finance, operations and business structure.'],
+      ['Qasim', 'Technology / Product Development', 'Software, prototyping and technical execution.'],
+    ],
+    ctaTitle: 'Ready for a clearer presence?',
     footerLine: 'Visibility systems for brands, creators and local businesses.',
-    legalNote: 'Imprint and privacy policy will be added for the public launch. Contact currently works through email or Instagram.',
+    location: 'Ilmenau, Germany',
+    legalNote: 'Imprint and privacy policy are linked as placeholders and need final legal text before active client acquisition.',
   },
 };
 
-const team = [
-  ['Mesum Abbas', 'Founder / Product & Systems', 'Technical founder focused on AI workflows, visibility systems and market execution.', 'MA'],
-  ['Melissa Pia Mehrle', 'Co-Founder / Operations & Business', 'Finance, operations and business structure.', 'MM'],
-  ['Qasim', 'Technology / Product Development', 'Software, prototyping and technical execution support.', 'QA'],
-];
+function useRevealAnimation() {
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll('.reveal'));
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach((el) => el.classList.add('is-visible'));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.16 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
 
 function Logo() {
   return (
     <a className="nv-logo" href="#hero" aria-label="NOVARCH home">
-      <span className="nv-mark">N</span>
+      <span className="nv-logo-mark">N</span>
       <span>NOVARCH</span>
     </a>
   );
 }
 
-function SectionLabel({ children }) {
-  return <div className="section-label"><span />{children}</div>;
-}
-
 function Header({ t }) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 32);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="nv-header">
+    <header className={`nv-header ${scrolled ? 'is-scrolled' : ''}`}>
       <Logo />
       <nav className="nv-nav" aria-label="Main navigation">
         {t.nav.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
@@ -147,169 +191,212 @@ function Header({ t }) {
   );
 }
 
-function HeroVisual({ t }) {
+function SectionLabel({ children }) {
+  return <p className="section-label">{children}</p>;
+}
+
+function HeroSection({ t }) {
   return (
-    <div className="hero-visual" aria-hidden="true">
-      <div className="hero-card main-card">
-        <span>Visibility Agent</span>
-        <strong>Analyse → Assets → Workflow</strong>
-        <p>{t.heroBadges.join(' · ')}</p>
+    <section className="hero-section" id="hero">
+      <div className="film-grain" aria-hidden="true" />
+      <div className="hero-geometry" aria-hidden="true">
+        <span className="geo-line line-one" />
+        <span className="geo-line line-two" />
+        <span className="geo-square" />
       </div>
-      <div className="orbit orbit-one" />
-      <div className="orbit orbit-two" />
-      <div className="mini-card card-one">Clarity</div>
-      <div className="mini-card card-two">Content</div>
-      <div className="mini-card card-three">Execution</div>
-    </div>
+      <div className="section-inner hero-inner reveal">
+        <div>
+          <SectionLabel>NOVARCH Visibility Agent</SectionLabel>
+          <h1>{t.heroTitle}</h1>
+          <p className="hero-lede">{t.heroText}</p>
+          <p className="hero-note">{t.heroNote}</p>
+          <div className="hero-actions">
+            <a className="primary-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
+            <a className="text-link" href="#process">{t.heroSecondary}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProblemSection({ t }) {
+  return (
+    <section className="nv-section problem-section">
+      <div className="section-inner problem-grid reveal">
+        <div className="section-copy wide-copy">
+          <SectionLabel>{t.problemEyebrow}</SectionLabel>
+          <h2>{t.problemTitle}</h2>
+          <p>{t.problemBody}</p>
+        </div>
+        <aside className="stat-panel">
+          <strong>{t.problemStat}</strong>
+          <p>{t.problemStatText}</p>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+function OfferSection({ t }) {
+  return (
+    <section className="nv-section offer-section" id="offer">
+      <div className="section-inner offer-grid reveal">
+        <div className="section-copy">
+          <SectionLabel>{t.offerEyebrow}</SectionLabel>
+          <h2>{t.offerTitle}</h2>
+          <p>{t.offerBody}</p>
+        </div>
+        <div className="deliverable-list">
+          {t.deliverables.map(([num, text]) => (
+            <div className="deliverable-row" key={num}>
+              <span>{num}</span>
+              <p>{text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProcessSection({ t }) {
+  return (
+    <section className="nv-section process-section" id="process">
+      <div className="section-inner reveal">
+        <div className="section-copy centered-copy">
+          <SectionLabel>{t.processEyebrow}</SectionLabel>
+          <h2>{t.processTitle}</h2>
+        </div>
+        <div className="process-grid">
+          {t.process.map(([num, title, body]) => (
+            <article className="process-card" key={num}>
+              <span>{num}</span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ForWhomSection({ t }) {
+  return (
+    <section className="nv-section for-whom-section" id="for-whom">
+      <div className="section-inner for-whom-grid reveal">
+        <div className="section-copy wide-copy">
+          <SectionLabel>{t.forWhomEyebrow}</SectionLabel>
+          <h2>{t.forWhomTitle}</h2>
+          <p>{t.forWhomBody}</p>
+        </div>
+        <div className="pill-wrap">
+          {t.pills.map((pill) => <span key={pill}>{pill}</span>)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PricingSection({ t }) {
+  return (
+    <section className="nv-section pricing-section">
+      <div className="section-inner pricing-card reveal">
+        <SectionLabel>{t.pricingEyebrow}</SectionLabel>
+        <h2>{t.pricingTitle}</h2>
+        <p>{t.pricingBody}</p>
+        <a className="primary-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
+      </div>
+    </section>
+  );
+}
+
+function WhyNovarchSection({ t }) {
+  return (
+    <section className="nv-section why-section">
+      <div className="section-inner why-grid reveal">
+        <div className="section-copy">
+          <SectionLabel>{t.whyEyebrow}</SectionLabel>
+          <h2>{t.whyTitle}</h2>
+          <p>{t.whyBody}</p>
+        </div>
+        <div className="vision-card">
+          <h3>{t.visionTitle}</h3>
+          <p>{t.visionBody}</p>
+          <div className="vision-rail">
+            {t.visionItems.map((item) => <span key={item}>{item}</span>)}
+          </div>
+        </div>
+      </div>
+      <div className="section-inner team-block reveal">
+        <div className="section-copy wide-copy">
+          <SectionLabel>Team</SectionLabel>
+          <h2>{t.teamTitle}</h2>
+          <p>{t.teamBody}</p>
+        </div>
+        <div className="team-grid">
+          {t.team.map(([name, role, body]) => (
+            <article className="team-card" key={name}>
+              <h3>{name}</h3>
+              <strong>{role}</strong>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CTASection({ t }) {
+  return (
+    <section className="cta-section" id="contact">
+      <div className="section-inner cta-card reveal">
+        <h2>{t.ctaTitle}</h2>
+        <a className="primary-btn dark-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
+      </div>
+    </section>
+  );
+}
+
+function Footer({ t }) {
+  return (
+    <footer className="nv-footer">
+      <div>
+        <Logo />
+        <p>{t.footerLine}</p>
+        <small>{t.location}</small>
+      </div>
+      <nav>
+        <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram</a>
+        <a href="/impressum">Impressum</a>
+        <a href="/datenschutz">Datenschutz</a>
+        <a href={t.switchPath}>{t.switchLabel}</a>
+      </nav>
+      <p className="footer-note">{t.legalNote}</p>
+    </footer>
   );
 }
 
 function NovarchLanding({ initialLanguage = 'de' }) {
   const t = copy[initialLanguage] || copy.de;
+  useRevealAnimation();
 
   return (
     <div className="novarch-v2">
       <Header t={t} />
       <main>
-        <section className="nv-section hero-section" id="hero">
-          <div className="section-inner hero-inner">
-            <div className="hero-copy">
-              <SectionLabel>{t.heroKicker}</SectionLabel>
-              <h1>{t.heroTitle}</h1>
-              <p>{t.heroText}</p>
-              <p className="hero-note">{t.heroNote}</p>
-              <div className="hero-actions">
-                <a className="primary-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
-                <a className="secondary-btn" href={INSTAGRAM_URL} target="_blank" rel="noreferrer">{t.instagram}</a>
-              </div>
-              <div className="trust-row">
-                {t.heroBadges.map((badge) => <span key={badge}>{badge}</span>)}
-              </div>
-            </div>
-            <HeroVisual t={t} />
-          </div>
-        </section>
-
-        <section className="nv-section agent-section" id="agent">
-          <div className="section-inner two-column">
-            <div className="section-copy">
-              <SectionLabel>Visibility Agent</SectionLabel>
-              <h2>{t.agentTitle}</h2>
-              <p>{t.agentText}</p>
-            </div>
-            <div className="signal-grid">
-              {t.signals.map((signal, index) => <div className="signal-card" key={signal}><span>{String(index + 1).padStart(2, '0')}</span>{signal}</div>)}
-            </div>
-          </div>
-        </section>
-
-        <section className="nv-section sprint-section" id="sprint">
-          <div className="section-inner sprint-inner">
-            <div className="sprint-card highlight-card">
-              <SectionLabel>{t.price}</SectionLabel>
-              <h2>{t.sprintTitle}</h2>
-              <p>{t.sprintIntro}</p>
-              <a className="primary-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
-            </div>
-            <div className="deliverables-card">
-              {t.deliverables.map((item) => <div className="deliverable" key={item}><span>✓</span>{item}</div>)}
-            </div>
-          </div>
-        </section>
-
-        <section className="nv-section process-section">
-          <div className="section-inner">
-            <div className="section-copy centered">
-              <SectionLabel>Workflow</SectionLabel>
-              <h2>{t.processTitle}</h2>
-            </div>
-            <div className="process-grid">
-              {t.process.map(([num, title, text]) => <article className="process-card" key={num}><span>{num}</span><h3>{title}</h3><p>{text}</p></article>)}
-            </div>
-          </div>
-        </section>
-
-        <section className="nv-section use-section" id="use-cases">
-          <div className="section-inner">
-            <div className="section-copy max-copy">
-              <SectionLabel>Markets</SectionLabel>
-              <h2>{t.useTitle}</h2>
-              <p>{t.useText}</p>
-            </div>
-            <div className="use-grid">
-              {t.useCases.map(([title, text]) => <article className="use-card" key={title}><h3>{title}</h3><p>{text}</p></article>)}
-            </div>
-          </div>
-        </section>
-
-        <section className="nv-section proof-section">
-          <div className="section-inner proof-inner">
-            <div>
-              <SectionLabel>Build in public</SectionLabel>
-              <h2>{t.proofTitle}</h2>
-              <p>{t.proofText}</p>
-            </div>
-            <div className="proof-panel">
-              <span>01 Analyse</span>
-              <span>02 Direction</span>
-              <span>03 Assets</span>
-              <span>04 Workflow</span>
-              <span>05 Iteration</span>
-            </div>
-          </div>
-        </section>
-
-        <section className="nv-section vision-section" id="vision">
-          <div className="section-inner vision-inner">
-            <div className="section-copy max-copy">
-              <SectionLabel>Long-term vision</SectionLabel>
-              <h2>{t.visionTitle}</h2>
-              <p>{t.visionText}</p>
-            </div>
-            <div className="vision-rail">
-              {t.visionItems.map((item) => <span key={item}>{item}</span>)}
-            </div>
-          </div>
-        </section>
-
-        <section className="nv-section team-section" id="team">
-          <div className="section-inner">
-            <div className="section-copy max-copy">
-              <SectionLabel>Team</SectionLabel>
-              <h2>{t.teamTitle}</h2>
-              <p>{t.teamText}</p>
-            </div>
-            <div className="team-grid">
-              {team.map(([name, role, text, initials]) => <article className="team-card" key={name}><div className="team-avatar">{initials}</div><h3>{name}</h3><strong>{role}</strong><p>{text}</p></article>)}
-            </div>
-          </div>
-        </section>
-
-        <section className="nv-section contact-section" id="contact">
-          <div className="section-inner contact-card">
-            <h2>{t.contactTitle}</h2>
-            <p>{t.contactText}</p>
-            <div className="hero-actions center-actions">
-              <a className="primary-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
-              <a className="secondary-btn" href={INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram</a>
-            </div>
-          </div>
-        </section>
+        <HeroSection t={t} />
+        <ProblemSection t={t} />
+        <OfferSection t={t} />
+        <ProcessSection t={t} />
+        <ForWhomSection t={t} />
+        <PricingSection t={t} />
+        <WhyNovarchSection t={t} />
+        <CTASection t={t} />
       </main>
-
-      <footer className="nv-footer">
-        <div>
-          <Logo />
-          <p>{t.footerLine}</p>
-        </div>
-        <div className="footer-links">
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-          <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram</a>
-          <a href="#legal">Impressum / Datenschutz</a>
-          <a href={t.switchPath}>{t.switchLabel}</a>
-        </div>
-        <p className="legal-note" id="legal">{t.legalNote}</p>
-      </footer>
+      <Footer t={t} />
     </div>
   );
 }
