@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NovarchLanding from "./components/NovarchLanding";
@@ -10,7 +10,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<NovarchLanding />} />
+          <Route path="/" element={<NovarchLanding initialLanguage="de" />} />
+          <Route path="/en" element={<NovarchLanding initialLanguage="en" />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/product-content-engine" element={<ProductContentEngine />} />
         </Routes>
@@ -20,4 +21,3 @@ function App() {
 }
 
 export default App;
-
