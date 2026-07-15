@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './NovarchV2.css';
 
 const CONTACT_EMAIL = 'novarch-ai@gmail.com';
-const INSTAGRAM_URL = 'https://www.instagram.com/_novarch.ai/';
+const INSTAGRAM_DM_URL = 'https://ig.me/m/_novarch.ai';
+
+const gmailCompose = (subject) =>
+  `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_EMAIL)}&su=${encodeURIComponent(subject)}`;
 
 const mailto = (subject) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`;
 
@@ -17,6 +20,8 @@ const copy = {
       ['Kontakt', '#contact'],
     ],
     cta: 'Kurzanalyse buchen',
+    instagramCta: 'Auf Instagram schreiben',
+    emailFallback: 'E-Mail öffnen',
     emailSubject: 'NOVARCH Kurzanalyse Anfrage',
     heroSecondary: 'Wie es funktioniert ↓',
     heroTitle: 'Sichtbarkeit, die zu Anfragen wird.',
@@ -79,6 +84,8 @@ const copy = {
       ['Contact', '#contact'],
     ],
     cta: 'Book a quick audit',
+    instagramCta: 'Message us on Instagram',
+    emailFallback: 'Open email app',
     emailSubject: 'NOVARCH Visibility Audit Request',
     heroSecondary: 'How it works ↓',
     heroTitle: 'Visibility that turns into inquiries.',
@@ -158,6 +165,22 @@ function useRevealAnimation() {
   }, []);
 }
 
+function AuditButton({ t, className = 'primary-btn' }) {
+  return (
+    <a className={className} href={gmailCompose(t.emailSubject)} target="_blank" rel="noreferrer">
+      {t.cta}
+    </a>
+  );
+}
+
+function InstagramButton({ t, className = 'text-link' }) {
+  return (
+    <a className={className} href={INSTAGRAM_DM_URL} target="_blank" rel="noreferrer">
+      {t.instagramCta}
+    </a>
+  );
+}
+
 function Logo() {
   return (
     <a className="nv-logo" href="#hero" aria-label="NOVARCH home">
@@ -185,7 +208,7 @@ function Header({ t }) {
       </nav>
       <div className="nv-header-actions">
         <a className="language-switch" href={t.switchPath}>{t.switchLabel}</a>
-        <a className="nv-header-cta" href={mailto(t.emailSubject)}>{t.cta}</a>
+        <AuditButton t={t} className="nv-header-cta" />
       </div>
     </header>
   );
@@ -211,7 +234,7 @@ function HeroSection({ t }) {
           <p className="hero-lede">{t.heroText}</p>
           <p className="hero-note">{t.heroNote}</p>
           <div className="hero-actions">
-            <a className="primary-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
+            <AuditButton t={t} />
             <a className="text-link" href="#process">{t.heroSecondary}</a>
           </div>
         </div>
@@ -306,7 +329,7 @@ function PricingSection({ t }) {
         <SectionLabel>{t.pricingEyebrow}</SectionLabel>
         <h2>{t.pricingTitle}</h2>
         <p>{t.pricingBody}</p>
-        <a className="primary-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
+        <AuditButton t={t} />
       </div>
     </section>
   );
@@ -354,7 +377,10 @@ function CTASection({ t }) {
     <section className="cta-section" id="contact">
       <div className="section-inner cta-card reveal">
         <h2>{t.ctaTitle}</h2>
-        <a className="primary-btn dark-btn" href={mailto(t.emailSubject)}>{t.cta}</a>
+        <div className="hero-actions">
+          <AuditButton t={t} className="primary-btn dark-btn" />
+          <InstagramButton t={t} />
+        </div>
       </div>
     </section>
   );
@@ -369,7 +395,8 @@ function Footer({ t }) {
         <small>{t.location}</small>
       </div>
       <nav>
-        <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram</a>
+        <a href={INSTAGRAM_DM_URL} target="_blank" rel="noreferrer">Instagram DM</a>
+        <a href={mailto(t.emailSubject)}>{t.emailFallback}</a>
         <a href="/impressum">Impressum</a>
         <a href="/datenschutz">Datenschutz</a>
         <a href={t.switchPath}>{t.switchLabel}</a>
