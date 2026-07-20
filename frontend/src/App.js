@@ -27,7 +27,7 @@ function AddressBlock() {
 function LegalLayout({ title, children }) {
   return (
     <main className="legal-page">
-      <Link className="legal-back" to="/">← Zurück zu NOVARCH</Link>
+      <Link className="legal-back" to="/"><img src="/novarch-mark.svg" alt="" /> <span>NOVARCH</span><em>← Zurück</em></Link>
       <article className="legal-card">
         <p className="legal-eyebrow">NOVARCH — Massum Abbas</p>
         <h1>{title}</h1>

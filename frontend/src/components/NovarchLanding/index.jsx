@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import '@fontsource/manrope/latin-400.css';
+import '@fontsource/manrope/latin-500.css';
+import '@fontsource/manrope/latin-600.css';
+import '@fontsource/manrope/latin-700.css';
+import '@fontsource/newsreader/latin-400.css';
+import '@fontsource/newsreader/latin-500.css';
+import '@fontsource/newsreader/latin-500-italic.css';
+import massumPortrait from '../../assets/team/massum-abbas.jpg';
+import melissaPortrait from '../../assets/team/melissa-pia-mehrle.png';
 import './NovarchV2.css';
 
 const CONTACT_EMAIL = 'novarch-ai@gmail.com';
@@ -37,8 +46,10 @@ const content = {
     priceEyebrow: 'FOUNDING PILOT', price: '499 €', priceTitle: 'Ein fester Scope. Ein ehrlicher Test.',
     priceText: 'Optionales Werbebudget oder zusätzliche Leistungen werden vorher separat vereinbart. Wir garantieren keine Kundenzahl — wir garantieren einen strukturierten, umgesetzten und ausgewerteten Versuch.',
     who: 'Für lokale Dienstleister mit einem echten Angebot, freier Kapazität und der Bereitschaft, einen fokussierten Marktversuch umzusetzen.',
-    teamEyebrow: 'NOVARCH', teamTitle: 'Gebaut zwischen Produktdenken, Operations und technischer Umsetzung.',
-    team: [['Massum Abbas', 'Founder · Product & Systems'], ['Melissa Pia Mehrle', 'Operations & Business'], ['Qasim', 'Technology & Product Development']],
+    teamEyebrow: 'GEBAUT IN DEUTSCHLAND', teamTitle: 'Kein anonymes Agenturmodell. Menschen, die mitdenken und umsetzen.',
+    teamText: 'NOVARCH entsteht in Ilmenau — nah genug am echten Geschäft, um nicht nur über Sichtbarkeit zu reden, sondern den Weg bis zur Anfrage mitzubauen.',
+    team: [['Massum Abbas', 'Founder · Product & Systems'], ['Melissa Pia Mehrle', 'Operations & Business']],
+    founderCaption: 'Strategie, Produkt und Kampagnensystem', operationsCaption: 'Operations, Sprache und lokale Perspektive',
     finalEyebrow: 'BEREIT FÜR EINEN ECHTEN TEST?', finalTitle: 'Welche Leistung soll als Nächstes wachsen?',
     finalText: 'Schreiben Sie uns die eine Leistung, die Sie gezielt auslasten möchten. Wir sagen Ihnen ehrlich, ob sie für den Sprint geeignet ist.',
     footer: 'Messbare Kampagnen und Workflow-Systeme aus Ilmenau.',
@@ -73,8 +84,10 @@ const content = {
     priceEyebrow: 'FOUNDING PILOT', price: '€499', priceTitle: 'A fixed scope. An honest test.',
     priceText: 'Optional ad spend or additional work is agreed separately in advance. We do not guarantee a number of customers — we guarantee a structured test that is built, launched and reviewed.',
     who: 'For service businesses with a real offer, available capacity and the willingness to run a focused market experiment.',
-    teamEyebrow: 'NOVARCH', teamTitle: 'Built across product thinking, operations and technical execution.',
-    team: [['Massum Abbas', 'Founder · Product & Systems'], ['Melissa Pia Mehrle', 'Operations & Business'], ['Qasim', 'Technology & Product Development']],
+    teamEyebrow: 'BUILT IN GERMANY', teamTitle: 'Not an anonymous agency model. People who think and build with you.',
+    teamText: 'NOVARCH is being built in Ilmenau — close enough to real businesses to go beyond talking about visibility and build the path all the way to an enquiry.',
+    team: [['Massum Abbas', 'Founder · Product & Systems'], ['Melissa Pia Mehrle', 'Operations & Business']],
+    founderCaption: 'Strategy, product and campaign system', operationsCaption: 'Operations, language and local perspective',
     finalEyebrow: 'READY FOR A REAL TEST?', finalTitle: 'Which service should grow next?',
     finalText: 'Send us the one service you want to fill. We will tell you honestly whether it is a fit for the sprint.',
     footer: 'Measurable campaigns and workflow systems from Ilmenau, Germany.',
@@ -102,7 +115,7 @@ function useReveal() {
 }
 
 function Mark() {
-  return <span className="brand-mark" aria-hidden="true"><i /><i /></span>;
+  return <span className="brand-mark" aria-hidden="true"><img src="/novarch-mark.svg" alt="" /></span>;
 }
 
 function Brand() {
@@ -224,8 +237,20 @@ function Team({ t }) {
   return (
     <section className="section team-section" id="team">
       <div className="wrap">
-        <div className="team-head" data-reveal><Eyebrow>{t.teamEyebrow}</Eyebrow><h2>{t.teamTitle}</h2></div>
-        <div className="team-list">{t.team.map(([name, role], index) => <div key={name} data-reveal><span>0{index + 1}</span><strong>{name}</strong><p>{role}</p></div>)}</div>
+        <div className="team-head" data-reveal><Eyebrow>{t.teamEyebrow}</Eyebrow><h2>{t.teamTitle}</h2><p>{t.teamText}</p></div>
+        <div className="founder-editorial">
+          <figure className="founder-card founder-card-primary" data-reveal>
+            <div className="founder-image"><img src={massumPortrait} alt="Massum Abbas, Founder von NOVARCH" /></div>
+            <figcaption><span>01</span><div><strong>{t.team[0][0]}</strong><p>{t.team[0][1]}</p><small>{t.founderCaption}</small></div></figcaption>
+          </figure>
+          <div className="founder-side" data-reveal>
+            <p className="place-note"><span>50.69° N</span><strong>ILMENAU</strong><span>10.91° E</span></p>
+            <figure className="founder-card founder-card-secondary">
+              <div className="founder-image"><img src={melissaPortrait} alt="Melissa Pia Mehrle, Operations & Business bei NOVARCH" /></div>
+              <figcaption><span>02</span><div><strong>{t.team[1][0]}</strong><p>{t.team[1][1]}</p><small>{t.operationsCaption}</small></div></figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
     </section>
   );
