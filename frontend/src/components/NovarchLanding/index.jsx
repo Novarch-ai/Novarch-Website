@@ -1,431 +1,265 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './NovarchV2.css';
 
 const CONTACT_EMAIL = 'novarch-ai@gmail.com';
 const INSTAGRAM_DM_URL = 'https://ig.me/m/_novarch.ai';
-
-const gmailCompose = (subject) =>
-  `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_EMAIL)}&su=${encodeURIComponent(subject)}`;
-
 const mailto = (subject) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`;
 
-const copy = {
+const content = {
   de: {
-    switchPath: '/en',
-    switchLabel: 'EN',
-    nav: [
-      ['Angebot', '#offer'],
-      ['Prozess', '#process'],
-      ['Für wen', '#for-whom'],
-      ['Kontakt', '#contact'],
+    lang: 'DE', switchPath: '/en', switchLabel: 'EN',
+    nav: [['Sprint', '#sprint'], ['System', '#system'], ['Ablauf', '#process'], ['Team', '#team']],
+    emailSubject: 'Anfrage zum NOVARCH Kampagnen-Sprint',
+    cta: 'Pilot anfragen', secondary: 'System ansehen',
+    eyebrow: 'NOVARCH · ILMENAU, DEUTSCHLAND',
+    heroA: 'Gute Arbeit.', heroB: 'Klarer Marktweg.',
+    heroText: 'Wir verwandeln eine konkrete Leistung in eine regionale Kampagne — mit klarer Botschaft, passenden Assets und einem messbaren Weg bis zur Anfrage.',
+    heroNote: 'Kein Content-Abo. Kein Reichweitenversprechen. Ein fokussierter kommerzieller Test.',
+    signalLabel: 'KAMPAGNEN-SYSTEM', signalStatus: 'PILOT AKTIV',
+    signalSteps: ['LEISTUNG', 'ZIELGRUPPE', 'BOTSCHAFT', 'ANFRAGE'],
+    proof: [['01', 'Leistung'], ['14', 'Tage bis Launch'], ['30', 'Tage Messfenster']],
+    tensionEyebrow: 'DIE LÜCKE', tensionTitle: 'Ihre Arbeit überzeugt. Ihr Marktweg vielleicht noch nicht.',
+    tensionText: 'Lokale Unternehmen brauchen nicht automatisch mehr Posts. Sie brauchen eine klare Antwort auf drei Fragen: Welche Leistung soll wachsen? Wen muss sie erreichen? Was soll diese Person als Nächstes tun?',
+    focusCards: [
+      ['01', 'Eine Leistung', 'Wir wählen nicht alles. Wir fokussieren das Angebot mit echtem Umsatz- und Kapazitätspotenzial.'],
+      ['02', 'Eine Zielgruppe', 'Wir verdichten Recherche und Kundensprache zu einer Botschaft, die verstanden wird.'],
+      ['03', 'Ein messbarer Weg', 'Aufmerksamkeit endet nicht im Feed, sondern führt zu einer nachvollziehbaren Anfrage oder Buchung.'],
     ],
-    cta: 'Kurzanalyse buchen',
-    instagramCta: 'Auf Instagram schreiben',
-    emailFallback: 'E-Mail öffnen',
-    emailSubject: 'NOVARCH Kurzanalyse Anfrage',
-    heroSecondary: 'Wie es funktioniert ↓',
-    heroTitle: 'Sichtbarkeit, die zu Anfragen wird.',
-    heroText: 'NOVARCH macht aus dem, was Ihr Unternehmen bereits hat, einen klaren, professionellen Online-Auftritt — in 14 Tagen.',
-    heroNote: 'Aus Deutschland aufgebaut. International gedacht. Für lokale Unternehmen, Creator und founder-led Brands.',
-    problemEyebrow: 'Das Problem',
-    problemTitle: 'Sie haben bereits alles, was Sie brauchen.',
-    problemBody: 'Gute Arbeit, zufriedene Kunden, echte Expertise. Was fehlt, ist Klarheit darüber, wie man das online zeigt — konsistent, professionell, ohne jeden Tag neu zu überlegen, was man posten soll.',
-    problemStat: '14 Tage',
-    problemStatText: 'um aus vorhandenem Material eine klare Sichtbarkeitsrichtung und erste nutzbare Inhalte zu bauen.',
-    offerEyebrow: 'Das Angebot',
-    offerTitle: 'Der 14-Tage Sichtbarkeits-Sprint',
-    offerBody: 'Wir entwickeln eine klare Content-Richtung für Ihr Unternehmen, erstellen fertige Inhalte und begleiten Sie durch die ersten 14 Tage der Umsetzung.',
-    deliverables: [
-      ['01', 'Ein Erstgespräch zur Analyse Ihres aktuellen Auftritts'],
-      ['02', 'Eine klare, auf Ihr Unternehmen zugeschnittene Content-Richtung'],
-      ['03', 'Fertige Inhalte für 14 Tage'],
-      ['04', 'Ein einfacher Umsetzungsplan'],
-      ['05', 'Ein Abschlussgespräch mit den nächsten Schritten'],
-    ],
-    processEyebrow: 'Der Ablauf',
-    processTitle: 'Wie es funktioniert',
-    process: [
-      ['01', 'Verstehen', 'Wir analysieren Ihr Unternehmen, Ihre Kunden und Ihren aktuellen Auftritt.'],
-      ['02', 'Ausrichten', 'Wir definieren, wofür Sie online stehen sollen und was Ihre Kunden verstehen müssen.'],
-      ['03', 'Umsetzen', 'Wir erstellen fertige Inhalte und begleiten Sie durch die ersten 14 Tage.'],
-    ],
-    forWhomEyebrow: 'Für wen',
-    forWhomTitle: 'Für wen ist das?',
-    forWhomBody: 'Lokale Unternehmen, Gründer und Selbstständige, die online professioneller und konsistenter auftreten möchten — ohne selbst Marketing-Experte werden zu müssen.',
-    pills: ['Salons', 'Praxen', 'Gastronomie', 'Berater', 'Creator', 'DTC-Brands'],
-    pricingEyebrow: 'Preis',
-    pricingTitle: 'Sprint ab 499 €',
-    pricingBody: 'Begrenztes Pilotangebot für die ersten Unternehmen in der Region. Internationale Projekte und E-Commerce-/DTC-Anwendungsfälle werden passend zum Umfang kalkuliert.',
-    whyEyebrow: 'Warum NOVARCH',
-    whyTitle: 'Kein Marketing von der Stange.',
-    whyBody: 'Wir kommen nicht aus einer Marketing-Fabrik. Wir bauen für jedes Unternehmen ein eigenes System — auf Basis echter Recherche, echter Kundenaussagen und einer klaren Strategie, nicht aus generischen Vorlagen.',
-    visionTitle: 'Langfristig baut NOVARCH Workflow-Systeme.',
-    visionBody: 'Der Visibility Sprint ist der erste marktreife Anwendungsfall. Die größere Richtung bleibt: KI-gestützte Systeme, die verstreute Informationen, Signale und Gespräche in klare nächste Schritte verwandeln.',
-    visionItems: ['Signals', 'Context', 'Next Actions', 'Follow-up', 'Execution'],
-    teamTitle: 'Das Team hinter NOVARCH',
-    teamBody: 'Ein kleines, internationales Team mit technischem, operativem und produktorientiertem Fokus.',
-    team: [
-      ['Mesum Abbas', 'Founder / Product & Systems', 'AI-Workflows, Sichtbarkeitssysteme und Marktausführung.'],
-      ['Melissa Pia Mehrle', 'Co-Founder / Operations & Business', 'Finance, Operations und Business-Struktur.'],
-      ['Qasim', 'Technology / Product Development', 'Software, Prototyping und technische Umsetzung.'],
-    ],
-    ctaTitle: 'Bereit für einen klareren Auftritt?',
-    footerLine: 'Sichtbarkeitssysteme für Marken, Creator und lokale Unternehmen.',
-    location: 'Ilmenau, Deutschland',
-    legalNote: 'Impressum und Datenschutz sind als Platzhalter verlinkt und müssen vor aktiver Kundengewinnung final ergänzt werden.',
+    sprintEyebrow: 'DER PILOT', sprintTitle: 'Ein Kampagnen-Sprint. Von Recherche bis Tag 30.',
+    sprintText: 'Ein klar begrenzter Aufbau für Unternehmen, die eine konkrete Leistung gezielt auslasten und dabei lernen möchten, was im Markt Resonanz erzeugt.',
+    deliverables: ['Angebots-, Zielgruppen- und Wettbewerbsrecherche', 'Kampagnenstrategie und Botschaft', 'Kernassets für ausgewählte Kanäle', 'Anfrageweg, Antwortvorlagen und Lead-Übersicht', 'Tag-30-Auswertung mit nächsten Schritten'],
+    systemEyebrow: 'DAS SYSTEM', systemTitle: 'Nicht fünf Einzelleistungen. Ein zusammenhängender Weg.',
+    systemText: 'NOVARCH verbindet Recherche, Kreation, Distribution und Messung. Dadurch wird sichtbar, wo eine Kampagne trägt — und wo sie bricht.',
+    flow: [['01', 'DISCOVER', 'Markt, Angebot und Sprache verstehen'], ['02', 'DESIGN', 'Botschaft, Assets und Anfrageweg bauen'], ['03', 'DEPLOY', 'Kanäle aktivieren und Reaktionen erfassen'], ['04', 'DECIDE', 'Ergebnisse auswerten und nächsten Test wählen']],
+    processEyebrow: 'SO ARBEITEN WIR', processTitle: 'Klein genug zum Starten. Ernst genug zum Messen.',
+    process: [['TAG 01–03', 'Fokussieren', 'Leistung, Zielgruppe und Ziel festlegen.'], ['TAG 04–10', 'Bauen', 'Kampagne, Assets und Conversion-Pfad erstellen.'], ['BIS TAG 14', 'Starten', 'Ausgewählte Kanäle live schalten.'], ['BIS TAG 30', 'Lernen', 'Signale, Anfragen und Brüche dokumentieren.']],
+    priceEyebrow: 'FOUNDING PILOT', price: '499 €', priceTitle: 'Ein fester Scope. Ein ehrlicher Test.',
+    priceText: 'Optionales Werbebudget oder zusätzliche Leistungen werden vorher separat vereinbart. Wir garantieren keine Kundenzahl — wir garantieren einen strukturierten, umgesetzten und ausgewerteten Versuch.',
+    who: 'Für lokale Dienstleister mit einem echten Angebot, freier Kapazität und der Bereitschaft, einen fokussierten Marktversuch umzusetzen.',
+    teamEyebrow: 'NOVARCH', teamTitle: 'Gebaut zwischen Produktdenken, Operations und technischer Umsetzung.',
+    team: [['Massum Abbas', 'Founder · Product & Systems'], ['Melissa Pia Mehrle', 'Operations & Business'], ['Qasim', 'Technology & Product Development']],
+    finalEyebrow: 'BEREIT FÜR EINEN ECHTEN TEST?', finalTitle: 'Welche Leistung soll als Nächstes wachsen?',
+    finalText: 'Schreiben Sie uns die eine Leistung, die Sie gezielt auslasten möchten. Wir sagen Ihnen ehrlich, ob sie für den Sprint geeignet ist.',
+    footer: 'Messbare Kampagnen und Workflow-Systeme aus Ilmenau.',
   },
   en: {
-    switchPath: '/',
-    switchLabel: 'DE',
-    nav: [
-      ['Offer', '#offer'],
-      ['Process', '#process'],
-      ['For whom', '#for-whom'],
-      ['Contact', '#contact'],
+    lang: 'EN', switchPath: '/', switchLabel: 'DE',
+    nav: [['Sprint', '#sprint'], ['System', '#system'], ['Process', '#process'], ['Team', '#team']],
+    emailSubject: 'NOVARCH Campaign Sprint enquiry',
+    cta: 'Request a pilot', secondary: 'See the system',
+    eyebrow: 'NOVARCH · BUILT IN GERMANY',
+    heroA: 'Good work.', heroB: 'A clear market path.',
+    heroText: 'We turn one concrete service into a focused campaign — with a clear message, channel-ready assets and a measurable path to enquiry.',
+    heroNote: 'Not a content subscription. Not a reach promise. A focused commercial test.',
+    signalLabel: 'CAMPAIGN SYSTEM', signalStatus: 'PILOT ACTIVE',
+    signalSteps: ['OFFER', 'AUDIENCE', 'MESSAGE', 'ENQUIRY'],
+    proof: [['01', 'Service'], ['14', 'Days to launch'], ['30', 'Day measurement window']],
+    tensionEyebrow: 'THE GAP', tensionTitle: 'Your work may be strong. Your path to market may not be — yet.',
+    tensionText: 'Local service businesses do not automatically need more posts. They need clear answers to three questions: Which service should grow? Who needs to see it? What should that person do next?',
+    focusCards: [
+      ['01', 'One service', 'We do not promote everything. We focus the offer with real revenue and capacity potential.'],
+      ['02', 'One audience', 'We turn research and customer language into a message people can understand.'],
+      ['03', 'One measurable path', 'Attention does not end in the feed. It leads to a traceable enquiry or booking.'],
     ],
-    cta: 'Book a quick audit',
-    instagramCta: 'Message us on Instagram',
-    emailFallback: 'Open email app',
-    emailSubject: 'NOVARCH Visibility Audit Request',
-    heroSecondary: 'How it works ↓',
-    heroTitle: 'Visibility that turns into inquiries.',
-    heroText: 'NOVARCH turns what your business already has into a clear, professional online presence — in 14 days.',
-    heroNote: 'Built from Germany. Designed to work internationally. For local businesses, creators and founder-led brands.',
-    problemEyebrow: 'The problem',
-    problemTitle: 'You already have what you need.',
-    problemBody: 'Good work, happy customers, real expertise. What is missing is clarity on how to show it online — consistently, professionally, without having to rethink what to post every day.',
-    problemStat: '14 days',
-    problemStatText: 'to turn existing material into a clear visibility direction and first usable content assets.',
-    offerEyebrow: 'The offer',
-    offerTitle: 'The 14-Day Visibility Sprint',
-    offerBody: 'We develop a clear content direction for your business, create finished content assets and support you through the first 14 days of execution.',
-    deliverables: [
-      ['01', 'An initial call to analyse your current online presence'],
-      ['02', 'A clear content direction tailored to your business'],
-      ['03', 'Finished content assets for 14 days'],
-      ['04', 'A simple execution plan'],
-      ['05', 'A final review call with next steps'],
-    ],
-    processEyebrow: 'The process',
-    processTitle: 'How it works',
-    process: [
-      ['01', 'Understand', 'We analyse your business, customers and current online presence.'],
-      ['02', 'Align', 'We define what you should stand for online and what your customers need to understand.'],
-      ['03', 'Execute', 'We create finished content assets and support you through the first 14 days.'],
-    ],
-    forWhomEyebrow: 'For whom',
-    forWhomTitle: 'Who is this for?',
-    forWhomBody: 'Local businesses, founders and independent operators who want to show up more professionally and consistently online — without becoming marketing experts themselves.',
-    pills: ['Salons', 'Clinics', 'Restaurants', 'Consultants', 'Creators', 'DTC brands'],
-    pricingEyebrow: 'Price',
-    pricingTitle: 'Sprint from €499',
-    pricingBody: 'Limited pilot offer for the first businesses in the region. International and ecommerce / DTC projects are scoped based on the work required.',
-    whyEyebrow: 'Why NOVARCH',
-    whyTitle: 'Not generic marketing.',
-    whyBody: 'We do not work from a content factory. We build a dedicated system for every business — based on real research, real customer language and a clear strategy, not generic templates.',
-    visionTitle: 'Long-term, NOVARCH builds workflow systems.',
-    visionBody: 'The Visibility Sprint is the first market-ready use case. The larger direction remains: AI-supported systems that turn scattered information, signals and conversations into clear next actions.',
-    visionItems: ['Signals', 'Context', 'Next Actions', 'Follow-up', 'Execution'],
-    teamTitle: 'The team behind NOVARCH',
-    teamBody: 'A small international team with technical, operational and product-focused depth.',
-    team: [
-      ['Mesum Abbas', 'Founder / Product & Systems', 'AI workflows, visibility systems and market execution.'],
-      ['Melissa Pia Mehrle', 'Co-Founder / Operations & Business', 'Finance, operations and business structure.'],
-      ['Qasim', 'Technology / Product Development', 'Software, prototyping and technical execution.'],
-    ],
-    ctaTitle: 'Ready for a clearer presence?',
-    footerLine: 'Visibility systems for brands, creators and local businesses.',
-    location: 'Ilmenau, Germany',
-    legalNote: 'Imprint and privacy policy are linked as placeholders and need final legal text before active client acquisition.',
+    sprintEyebrow: 'THE PILOT', sprintTitle: 'One Campaign Sprint. From research through day 30.',
+    sprintText: 'A tightly scoped build for businesses that want to fill capacity for one service and learn what creates real market response.',
+    deliverables: ['Offer, audience and competitor research', 'Campaign strategy and message', 'Core assets for selected channels', 'Enquiry path, response scripts and lead overview', 'Day-30 review with next actions'],
+    systemEyebrow: 'THE SYSTEM', systemTitle: 'Not five disconnected services. One connected path.',
+    systemText: 'NOVARCH connects research, creative, distribution and measurement. That makes it visible where a campaign works — and where it breaks.',
+    flow: [['01', 'DISCOVER', 'Understand market, offer and language'], ['02', 'DESIGN', 'Build message, assets and enquiry path'], ['03', 'DEPLOY', 'Activate channels and capture response'], ['04', 'DECIDE', 'Review evidence and choose the next test']],
+    processEyebrow: 'HOW WE WORK', processTitle: 'Small enough to start. Serious enough to measure.',
+    process: [['DAY 01–03', 'Focus', 'Set the service, audience and target.'], ['DAY 04–10', 'Build', 'Create the campaign, assets and conversion path.'], ['BY DAY 14', 'Launch', 'Activate the selected channels.'], ['THROUGH DAY 30', 'Learn', 'Document signals, enquiries and friction.']],
+    priceEyebrow: 'FOUNDING PILOT', price: '€499', priceTitle: 'A fixed scope. An honest test.',
+    priceText: 'Optional ad spend or additional work is agreed separately in advance. We do not guarantee a number of customers — we guarantee a structured test that is built, launched and reviewed.',
+    who: 'For service businesses with a real offer, available capacity and the willingness to run a focused market experiment.',
+    teamEyebrow: 'NOVARCH', teamTitle: 'Built across product thinking, operations and technical execution.',
+    team: [['Massum Abbas', 'Founder · Product & Systems'], ['Melissa Pia Mehrle', 'Operations & Business'], ['Qasim', 'Technology & Product Development']],
+    finalEyebrow: 'READY FOR A REAL TEST?', finalTitle: 'Which service should grow next?',
+    finalText: 'Send us the one service you want to fill. We will tell you honestly whether it is a fit for the sprint.',
+    footer: 'Measurable campaigns and workflow systems from Ilmenau, Germany.',
   },
 };
 
-function useRevealAnimation() {
+function useReveal() {
   useEffect(() => {
-    const elements = Array.from(document.querySelectorAll('.reveal'));
+    const items = [...document.querySelectorAll('[data-reveal]')];
     if (!('IntersectionObserver' in window)) {
-      elements.forEach((el) => el.classList.add('is-visible'));
+      items.forEach((item) => item.classList.add('revealed'));
       return undefined;
     }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.16 }
-    );
-
-    elements.forEach((el) => observer.observe(el));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    items.forEach((item) => observer.observe(item));
     return () => observer.disconnect();
   }, []);
 }
 
-function AuditButton({ t, className = 'primary-btn' }) {
-  return (
-    <a className={className} href={gmailCompose(t.emailSubject)} target="_blank" rel="noreferrer">
-      {t.cta}
-    </a>
-  );
+function Mark() {
+  return <span className="brand-mark" aria-hidden="true"><i /><i /></span>;
 }
 
-function InstagramButton({ t, className = 'text-link' }) {
-  return (
-    <a className={className} href={INSTAGRAM_DM_URL} target="_blank" rel="noreferrer">
-      {t.instagramCta}
-    </a>
-  );
+function Brand() {
+  return <a className="brand" href="#top"><Mark /><span>NOVARCH</span></a>;
 }
 
-function Logo() {
-  return (
-    <a className="nv-logo" href="#hero" aria-label="NOVARCH home">
-      <span className="nv-logo-mark">N</span>
-      <span>NOVARCH</span>
-    </a>
-  );
+function Button({ t, dark = false }) {
+  return <a className={`button ${dark ? 'button-dark' : ''}`} href={mailto(t.emailSubject)}>{t.cta}<span>↗</span></a>;
 }
 
 function Header({ t }) {
-  const [scrolled, setScrolled] = useState(false);
-
+  const [compact, setCompact] = useState(false);
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 32);
-    handleScroll();
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setCompact(window.scrollY > 24);
+    onScroll(); window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
   return (
-    <header className={`nv-header ${scrolled ? 'is-scrolled' : ''}`}>
-      <Logo />
-      <nav className="nv-nav" aria-label="Main navigation">
-        {t.nav.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
-      </nav>
-      <div className="nv-header-actions">
-        <a className="language-switch" href={t.switchPath}>{t.switchLabel}</a>
-        <AuditButton t={t} className="nv-header-cta" />
-      </div>
+    <header className={`site-header ${compact ? 'compact' : ''}`}>
+      <Brand />
+      <nav>{t.nav.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav>
+      <div className="header-actions"><a className="language" href={t.switchPath}>{t.switchLabel}</a><Button t={t} /></div>
     </header>
   );
 }
 
-function SectionLabel({ children }) {
-  return <p className="section-label">{children}</p>;
+function Eyebrow({ children, light = false }) {
+  return <p className={`eyebrow ${light ? 'light' : ''}`}><span />{children}</p>;
 }
 
-function HeroSection({ t }) {
+function CampaignVisual({ t }) {
   return (
-    <section className="hero-section" id="hero">
-      <div className="film-grain" aria-hidden="true" />
-      <div className="hero-geometry" aria-hidden="true">
-        <span className="geo-line line-one" />
-        <span className="geo-line line-two" />
-        <span className="geo-square" />
-      </div>
-      <div className="section-inner hero-inner reveal">
-        <div>
-          <SectionLabel>NOVARCH Visibility Agent</SectionLabel>
-          <h1>{t.heroTitle}</h1>
+    <div className="campaign-visual" aria-label={t.signalLabel}>
+      <div className="visual-head"><span>{t.signalLabel}</span><em><i />{t.signalStatus}</em></div>
+      <div className="signal-orbit"><div className="orbit orbit-a" /><div className="orbit orbit-b" /><div className="orbit-core"><Mark /></div><span className="pulse pulse-a" /><span className="pulse pulse-b" /></div>
+      <div className="signal-steps">{t.signalSteps.map((step, index) => <div key={step}><span>0{index + 1}</span><strong>{step}</strong>{index < t.signalSteps.length - 1 && <i>→</i>}</div>)}</div>
+      <div className="visual-foot"><span>RESEARCH-LED</span><span>CHANNEL-READY</span><span>MEASURABLE</span></div>
+    </div>
+  );
+}
+
+function Hero({ t }) {
+  return (
+    <section className="hero" id="top">
+      <div className="hero-grid" aria-hidden="true" />
+      <div className="hero-glow glow-a" /><div className="hero-glow glow-b" />
+      <div className="wrap hero-layout">
+        <div className="hero-copy" data-reveal>
+          <Eyebrow>{t.eyebrow}</Eyebrow>
+          <h1><span>{t.heroA}</span>{t.heroB}</h1>
           <p className="hero-lede">{t.heroText}</p>
           <p className="hero-note">{t.heroNote}</p>
-          <div className="hero-actions">
-            <AuditButton t={t} />
-            <a className="text-link" href="#process">{t.heroSecondary}</a>
-          </div>
+          <div className="hero-actions"><Button t={t} /><a className="quiet-link" href="#system">{t.secondary}<span>↓</span></a></div>
         </div>
+        <div data-reveal className="visual-wrap"><CampaignVisual t={t} /></div>
+      </div>
+      <div className="wrap proof-strip">{t.proof.map(([number, label]) => <div key={label}><strong>{number}</strong><span>{label}</span></div>)}</div>
+    </section>
+  );
+}
+
+function Gap({ t }) {
+  return (
+    <section className="section section-paper">
+      <div className="wrap">
+        <div className="editorial-grid" data-reveal><Eyebrow>{t.tensionEyebrow}</Eyebrow><h2>{t.tensionTitle}</h2><p>{t.tensionText}</p></div>
+        <div className="focus-grid">{t.focusCards.map(([n, title, body]) => <article key={n} data-reveal><span>{n}</span><div className="card-line" /><h3>{title}</h3><p>{body}</p></article>)}</div>
       </div>
     </section>
   );
 }
 
-function ProblemSection({ t }) {
+function Sprint({ t }) {
   return (
-    <section className="nv-section problem-section">
-      <div className="section-inner problem-grid reveal">
-        <div className="section-copy wide-copy">
-          <SectionLabel>{t.problemEyebrow}</SectionLabel>
-          <h2>{t.problemTitle}</h2>
-          <p>{t.problemBody}</p>
-        </div>
-        <aside className="stat-panel">
-          <strong>{t.problemStat}</strong>
-          <p>{t.problemStatText}</p>
-        </aside>
+    <section className="section section-ink" id="sprint">
+      <div className="wrap sprint-grid">
+        <div data-reveal><Eyebrow light>{t.sprintEyebrow}</Eyebrow><h2>{t.sprintTitle}</h2><p className="section-lede">{t.sprintText}</p><Button t={t} /></div>
+        <div className="deliverables" data-reveal>{t.deliverables.map((item, index) => <div key={item}><span>0{index + 1}</span><p>{item}</p><i>↗</i></div>)}</div>
       </div>
     </section>
   );
 }
 
-function OfferSection({ t }) {
+function System({ t }) {
   return (
-    <section className="nv-section offer-section" id="offer">
-      <div className="section-inner offer-grid reveal">
-        <div className="section-copy">
-          <SectionLabel>{t.offerEyebrow}</SectionLabel>
-          <h2>{t.offerTitle}</h2>
-          <p>{t.offerBody}</p>
-        </div>
-        <div className="deliverable-list">
-          {t.deliverables.map(([num, text]) => (
-            <div className="deliverable-row" key={num}>
-              <span>{num}</span>
-              <p>{text}</p>
-            </div>
-          ))}
-        </div>
+    <section className="section system-section" id="system">
+      <div className="wrap">
+        <div className="system-intro" data-reveal><Eyebrow>{t.systemEyebrow}</Eyebrow><h2>{t.systemTitle}</h2><p>{t.systemText}</p></div>
+        <div className="flow-grid">{t.flow.map(([n, title, body], index) => <article key={n} data-reveal><div><span>{n}</span>{index < t.flow.length - 1 && <i>↗</i>}</div><strong>{title}</strong><p>{body}</p></article>)}</div>
       </div>
     </section>
   );
 }
 
-function ProcessSection({ t }) {
+function Process({ t }) {
   return (
-    <section className="nv-section process-section" id="process">
-      <div className="section-inner reveal">
-        <div className="section-copy centered-copy">
-          <SectionLabel>{t.processEyebrow}</SectionLabel>
-          <h2>{t.processTitle}</h2>
-        </div>
-        <div className="process-grid">
-          {t.process.map(([num, title, body]) => (
-            <article className="process-card" key={num}>
-              <span>{num}</span>
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </article>
-          ))}
-        </div>
+    <section className="section process-section" id="process">
+      <div className="wrap">
+        <div className="process-heading" data-reveal><Eyebrow>{t.processEyebrow}</Eyebrow><h2>{t.processTitle}</h2></div>
+        <div className="timeline">{t.process.map(([time, title, body], index) => <article key={time} data-reveal><span>{time}</span><div className="timeline-dot">{index + 1}</div><div><h3>{title}</h3><p>{body}</p></div></article>)}</div>
       </div>
     </section>
   );
 }
 
-function ForWhomSection({ t }) {
+function Offer({ t }) {
   return (
-    <section className="nv-section for-whom-section" id="for-whom">
-      <div className="section-inner for-whom-grid reveal">
-        <div className="section-copy wide-copy">
-          <SectionLabel>{t.forWhomEyebrow}</SectionLabel>
-          <h2>{t.forWhomTitle}</h2>
-          <p>{t.forWhomBody}</p>
-        </div>
-        <div className="pill-wrap">
-          {t.pills.map((pill) => <span key={pill}>{pill}</span>)}
-        </div>
+    <section className="section offer-section">
+      <div className="wrap offer-card" data-reveal>
+        <div><Eyebrow light>{t.priceEyebrow}</Eyebrow><strong className="price">{t.price}</strong></div>
+        <div><h2>{t.priceTitle}</h2><p>{t.priceText}</p><div className="fit-note"><span>✓</span>{t.who}</div></div>
+        <Button t={t} dark />
       </div>
     </section>
   );
 }
 
-function PricingSection({ t }) {
+function Team({ t }) {
   return (
-    <section className="nv-section pricing-section">
-      <div className="section-inner pricing-card reveal">
-        <SectionLabel>{t.pricingEyebrow}</SectionLabel>
-        <h2>{t.pricingTitle}</h2>
-        <p>{t.pricingBody}</p>
-        <AuditButton t={t} />
+    <section className="section team-section" id="team">
+      <div className="wrap">
+        <div className="team-head" data-reveal><Eyebrow>{t.teamEyebrow}</Eyebrow><h2>{t.teamTitle}</h2></div>
+        <div className="team-list">{t.team.map(([name, role], index) => <div key={name} data-reveal><span>0{index + 1}</span><strong>{name}</strong><p>{role}</p></div>)}</div>
       </div>
     </section>
   );
 }
 
-function WhyNovarchSection({ t }) {
+function FinalCTA({ t }) {
   return (
-    <section className="nv-section why-section">
-      <div className="section-inner why-grid reveal">
-        <div className="section-copy">
-          <SectionLabel>{t.whyEyebrow}</SectionLabel>
-          <h2>{t.whyTitle}</h2>
-          <p>{t.whyBody}</p>
-        </div>
-        <div className="vision-card">
-          <h3>{t.visionTitle}</h3>
-          <p>{t.visionBody}</p>
-          <div className="vision-rail">
-            {t.visionItems.map((item) => <span key={item}>{item}</span>)}
-          </div>
-        </div>
-      </div>
-      <div className="section-inner team-block reveal">
-        <div className="section-copy wide-copy">
-          <SectionLabel>Team</SectionLabel>
-          <h2>{t.teamTitle}</h2>
-          <p>{t.teamBody}</p>
-        </div>
-        <div className="team-grid">
-          {t.team.map(([name, role, body]) => (
-            <article className="team-card" key={name}>
-              <h3>{name}</h3>
-              <strong>{role}</strong>
-              <p>{body}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CTASection({ t }) {
-  return (
-    <section className="cta-section" id="contact">
-      <div className="section-inner cta-card reveal">
-        <h2>{t.ctaTitle}</h2>
-        <div className="hero-actions">
-          <AuditButton t={t} className="primary-btn dark-btn" />
-          <InstagramButton t={t} />
-        </div>
-      </div>
-    </section>
+    <section className="final-cta" id="contact"><div className="final-grid" aria-hidden="true" /><div className="wrap" data-reveal><Eyebrow light>{t.finalEyebrow}</Eyebrow><h2>{t.finalTitle}</h2><p>{t.finalText}</p><div><Button t={t} /><a href={INSTAGRAM_DM_URL} target="_blank" rel="noreferrer">Instagram DM ↗</a></div></div></section>
   );
 }
 
 function Footer({ t }) {
   return (
-    <footer className="nv-footer">
-      <div>
-        <Logo />
-        <p>{t.footerLine}</p>
-        <small>{t.location}</small>
-      </div>
-      <nav>
-        <a href={INSTAGRAM_DM_URL} target="_blank" rel="noreferrer">Instagram DM</a>
-        <a href={mailto(t.emailSubject)}>{t.emailFallback}</a>
-        <a href="/impressum">Impressum</a>
-        <a href="/datenschutz">Datenschutz</a>
-        <a href={t.switchPath}>{t.switchLabel}</a>
-      </nav>
-      <p className="footer-note">{t.legalNote}</p>
-    </footer>
+    <footer className="site-footer"><div className="wrap footer-grid"><div><Brand /><p>{t.footer}</p></div><div className="footer-links"><a href={mailto(t.emailSubject)}>{CONTACT_EMAIL}</a><a href={INSTAGRAM_DM_URL} target="_blank" rel="noreferrer">Instagram</a><Link to="/impressum">Impressum</Link><Link to="/datenschutz">Datenschutz</Link></div><div className="footer-bottom"><span>© 2026 NOVARCH — Massum Abbas</span><span>ILMENAU · GERMANY</span><a href={t.switchPath}>{t.switchLabel}</a></div></div></footer>
   );
 }
 
 function NovarchLanding({ initialLanguage = 'de' }) {
-  const t = copy[initialLanguage] || copy.de;
-  useRevealAnimation();
-
-  return (
-    <div className="novarch-v2">
-      <Header t={t} />
-      <main>
-        <HeroSection t={t} />
-        <ProblemSection t={t} />
-        <OfferSection t={t} />
-        <ProcessSection t={t} />
-        <ForWhomSection t={t} />
-        <PricingSection t={t} />
-        <WhyNovarchSection t={t} />
-        <CTASection t={t} />
-      </main>
-      <Footer t={t} />
-    </div>
-  );
+  const t = content[initialLanguage] || content.de;
+  useReveal();
+  useEffect(() => {
+    const english = initialLanguage === 'en';
+    document.documentElement.lang = english ? 'en' : 'de';
+    document.title = english
+      ? 'NOVARCH | Measurable campaigns for service businesses'
+      : 'NOVARCH | Messbare Kampagnen für lokale Unternehmen';
+    const description = document.querySelector('meta[name="description"]');
+    if (description) {
+      description.setAttribute('content', english
+        ? 'NOVARCH builds focused, measurable campaign sprints for service businesses — from research and creative through launch and day-30 review.'
+        : 'NOVARCH entwickelt messbare Kampagnen-Sprints für lokale Dienstleistungsunternehmen — von Recherche und Kreation bis Launch und Tag-30-Auswertung.');
+    }
+  }, [initialLanguage]);
+  return <div className="novarch-site"><Header t={t} /><main><Hero t={t} /><Gap t={t} /><Sprint t={t} /><System t={t} /><Process t={t} /><Offer t={t} /><Team t={t} /><FinalCTA t={t} /></main><Footer t={t} /></div>;
 }
 
 export default NovarchLanding;
