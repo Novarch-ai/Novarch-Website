@@ -38,9 +38,13 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-      - name: Add GitHub Pages SPA fallback and custom domain
+      - name: Add GitHub Pages routes, SPA fallback and custom domain
         run: |
           cp frontend/build/index.html frontend/build/404.html
+          mkdir -p frontend/build/en frontend/build/impressum frontend/build/datenschutz
+          cp frontend/build/index.html frontend/build/en/index.html
+          cp frontend/build/index.html frontend/build/impressum/index.html
+          cp frontend/build/index.html frontend/build/datenschutz/index.html
           echo "novarch.eu" > frontend/build/CNAME
 
       - name: Configure GitHub Pages
