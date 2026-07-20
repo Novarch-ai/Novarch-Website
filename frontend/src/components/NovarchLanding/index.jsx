@@ -115,7 +115,7 @@ function useReveal() {
 }
 
 function Mark() {
-  return <span className="brand-mark" aria-hidden="true"><i /><i /></span>;
+  return <span className="brand-mark" aria-hidden="true"><img src="/novarch-mark.svg" alt="" /></span>;
 }
 
 function Brand() {
