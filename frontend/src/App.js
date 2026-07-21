@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import NovarchLanding from "./components/NovarchLanding";
+import "./lib/siteMetrics";
 
 const BUSINESS = {
   designation: "NOVARCH",
