@@ -94,23 +94,41 @@ function PrivacyPage() {
         bestehen.
       </p>
 
-      <h2>4. Analyse, Cookies und externe Links</h2>
+      <h2>4. Reichweiten- und Interaktionsmessung</h2>
       <p>
-        NOVARCH setzt auf dieser Website derzeit keine eigenen Analyse- oder Trackingdienste
-        und keine nicht technisch erforderlichen Cookies ein. Links zu Instagram,
-        E-Mail-Diensten oder anderen externen Angeboten übertragen Daten erst, wenn Sie den
-        jeweiligen Link aufrufen. Für die anschließende Verarbeitung gelten die
-        Datenschutzhinweise des jeweiligen Anbieters.
+        NOVARCH erfasst auf dieser Website in begrenztem Umfang technische Nutzungsereignisse,
+        insbesondere Seitenaufrufe sowie Klicks auf E-Mail- und Instagram-Links. Bei Aufrufen
+        aus Kampagnen können pseudonyme Kampagnen- und Kontaktkennungen aus der URL mitgesendet
+        werden. Es werden keine Klarnamen oder E-Mail-Adressen an das Analysesystem übertragen.
+        Die Messung erfolgt ohne eigene Cookies und ohne dauerhafte Speicherung im Browser.
+      </p>
+      <p>
+        Die Ereignisse werden an einen von NOVARCH betriebenen Cloudflare Worker übertragen
+        und für eine kurzfristige Auswertung in den Worker-Protokollen verarbeitet. Zweck ist
+        die technische und wirtschaftliche Bewertung unserer Website und Kampagnen. Die
+        Verarbeitung erfolgt auf Grundlage unseres berechtigten Interesses gemäß Art. 6 Abs. 1
+        lit. f DSGVO. Anbieter ist Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107,
+        USA. Weitere Informationen finden Sie in der{" "}
+        <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noreferrer">
+          Datenschutzerklärung von Cloudflare
+        </a>.
       </p>
 
-      <h2>5. Ihre Rechte</h2>
+      <h2>5. Externe Links</h2>
+      <p>
+        Links zu Instagram, E-Mail-Diensten oder anderen externen Angeboten übertragen Daten
+        erst, wenn Sie den jeweiligen Link aufrufen. Für die anschließende Verarbeitung gelten
+        die Datenschutzhinweise des jeweiligen Anbieters.
+      </p>
+
+      <h2>6. Ihre Rechte</h2>
       <p>
         Sie haben nach Maßgabe der DSGVO insbesondere das Recht auf Auskunft, Berichtigung,
         Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch.
         Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen.
       </p>
 
-      <h2>6. Beschwerderecht</h2>
+      <h2>7. Beschwerderecht</h2>
       <p>
         Sie können sich bei einer Datenschutzaufsichtsbehörde beschweren. Für Thüringen:
         Thüringer Landesbeauftragter für den Datenschutz und die Informationsfreiheit,
@@ -120,12 +138,12 @@ function PrivacyPage() {
         </a>.
       </p>
 
-      <h2>7. Aktualisierung</h2>
+      <h2>8. Aktualisierung</h2>
       <p>
         Wir aktualisieren diese Erklärung, wenn sich eingesetzte Dienste oder rechtliche
         Anforderungen ändern.
       </p>
-      <p className="legal-updated">Stand: 20. Juli 2026</p>
+      <p className="legal-updated">Stand: 21. Juli 2026</p>
     </LegalLayout>
   );
 }
