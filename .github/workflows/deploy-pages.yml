@@ -36,6 +36,8 @@ jobs:
 
       - name: Build frontend
         working-directory: frontend
+        env:
+          REACT_APP_BACKEND_URL: https://novarch-api.onrender.com
         run: npm run build
 
       - name: Add GitHub Pages routes, SPA fallback and custom domain
@@ -49,9 +51,13 @@ jobs:
             frontend/build/work \
             frontend/build/company \
             frontend/build/manifesto \
+            frontend/build/launch \
+            frontend/build/community \
+            frontend/build/talent \
+            frontend/build/advisors \
             frontend/build/pay \
             frontend/build/pay/success
-          for route in en impressum datenschutz systems work company manifesto pay pay/success; do
+          for route in en impressum datenschutz systems work company manifesto launch community talent advisors pay pay/success; do
             cp frontend/build/index.html "frontend/build/$route/index.html"
           done
           echo "novarch.eu" > frontend/build/CNAME
