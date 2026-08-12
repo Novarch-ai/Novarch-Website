@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle2, LockKeyhole } from "lucide-react";
 import "./NovaSite.css";
 import "./PayPage.css";
 
-const BACKEND_URL=process.env.REACT_APP_BACKEND_URL||"";
+const BACKEND_URL=process.env.REACT_APP_BACKEND_URL||"https://novarch-api.onrender.com";
 
 function Header(){return <header className="nv-nav"><Link to="/" className="nv-brand"><span className="nv-mark">N</span><span>NOVARCH</span></Link><Link className="nv-nav-cta" to="/">Back to NOVARCH</Link></header>}
 
