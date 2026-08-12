@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, status
+from fastapi import FastAPI, APIRouter, HTTPException, status, Request
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,7 +9,9 @@ from pydantic import BaseModel, Field, EmailStr
 from typing import List, Optional
 import uuid
 from datetime import datetime
+from decimal import Decimal, ROUND_HALF_UP
 import httpx
+import stripe
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from novarch_prompt import NOVARCH_SYSTEM_PROMPT
 
@@ -25,6 +27,11 @@ BREVO_LIST_NAME = os.environ.get('BREVO_LIST_NAME', 'Novarch Early Access')
 BREVO_API_URL = "https://api.brevo.com/v3"
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
 ALLOWED_ORIGINS = [x.strip() for x in os.environ.get('ALLOWED_ORIGINS', '*').split(',') if x.strip()]
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+PUBLIC_SITE_URL = os.environ.get('PUBLIC_SITE_URL', 'https://novarch.eu').rstrip('/')
+if STRIPE_SECRET_KEY:
+    stripe.api_key = STRIPE_SECRET_KEY
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
@@ -63,6 +70,17 @@ class SubscriberInDB(BaseModel):
     brevo_synced: bool = False
     brevo_contact_id: Optional[int] = None
     status: str = "active"
+
+class PaymentCheckoutRequest(BaseModel):
+    email: EmailStr
+    amount_eur: Decimal
+    reference: str = Field(min_length=2, max_length=120)
+    note: Optional[str] = Field(default=None, max_length=500)
+
+class PaymentCheckoutResponse(BaseModel):
+    checkout_url: str
+    session_id: str
+    payment_id: str
 
 class ChatMessage(BaseModel):
     role: str
@@ -161,21 +179,9 @@ async def subscribe_email(request: SubscribeRequest):
         existing = await db.subscribers.find_one({"email": email, "purpose": purpose})
         if existing:
             return SubscribeResponse(success=True, message="You're already on this list.", email=email, referral_code=existing.get("referral_code"))
-
         list_id = await brevo_service.get_or_create_list(BREVO_LIST_NAME)
         brevo_result = await brevo_service.create_contact(email, list_id)
-        subscriber = {
-            "id": str(uuid.uuid4()),
-            "email": email,
-            "subscribed_at": datetime.utcnow(),
-            "purpose": purpose,
-            "source": source,
-            "referral_code": referral_code,
-            "privacy_acknowledged": bool(request.privacy_acknowledged),
-            "brevo_synced": brevo_result.get("success", False),
-            "brevo_list_id": list_id,
-            "status": "active"
-        }
+        subscriber = {"id": str(uuid.uuid4()), "email": email, "subscribed_at": datetime.utcnow(), "purpose": purpose, "source": source, "referral_code": referral_code, "privacy_acknowledged": bool(request.privacy_acknowledged), "brevo_synced": brevo_result.get("success", False), "brevo_list_id": list_id, "status": "active"}
         await db.subscribers.insert_one(subscriber)
         logger.info(f"New subscriber: {email}, purpose: {purpose}, source: {source}, Brevo synced: {brevo_result.get('success', False)}")
         return SubscribeResponse(success=True, message="You're on the list. We'll reach out when it's ready.", email=email, referral_code=referral_code)
@@ -186,6 +192,93 @@ async def subscribe_email(request: SubscribeRequest):
 @api_router.get("/subscribers/count")
 async def get_subscriber_count():
     return {"count": await db.subscribers.count_documents({"status": "active"})}
+
+@api_router.post("/payments/checkout", response_model=PaymentCheckoutResponse)
+async def create_payment_checkout(request: PaymentCheckoutRequest):
+    if not STRIPE_SECRET_KEY:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Payments are not configured yet.")
+    amount = request.amount_eur.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    if amount < Decimal('1.00') or amount > Decimal('50000.00'):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Payment amount must be between €1 and €50,000.")
+    amount_cents = int(amount * 100)
+    payment_id = str(uuid.uuid4())
+    reference = request.reference.strip()
+    note = (request.note or '').strip()
+    try:
+        session = stripe.checkout.Session.create(
+            mode='payment',
+            customer_email=request.email.lower().strip(),
+            line_items=[{
+                'price_data': {
+                    'currency': 'eur',
+                    'product_data': {
+                        'name': 'NOVARCH payment',
+                        'description': reference[:120]
+                    },
+                    'unit_amount': amount_cents,
+                },
+                'quantity': 1,
+            }],
+            metadata={
+                'novarch_payment_id': payment_id,
+                'reference': reference,
+                'note': note[:500],
+            },
+            payment_intent_data={'metadata': {'novarch_payment_id': payment_id, 'reference': reference}},
+            success_url=f"{PUBLIC_SITE_URL}/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{PUBLIC_SITE_URL}/pay?cancelled=1",
+        )
+        await db.payments.insert_one({
+            'id': payment_id,
+            'stripe_session_id': session.id,
+            'email': request.email.lower().strip(),
+            'amount_eur': str(amount),
+            'amount_cents': amount_cents,
+            'currency': 'eur',
+            'reference': reference,
+            'note': note,
+            'status': 'checkout_created',
+            'created_at': datetime.utcnow(),
+            'updated_at': datetime.utcnow(),
+        })
+        return PaymentCheckoutResponse(checkout_url=session.url, session_id=session.id, payment_id=payment_id)
+    except stripe.StripeError as e:
+        logger.error(f"Stripe checkout error: {str(e)}")
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Unable to start secure checkout.")
+
+@api_router.get("/payments/session/{session_id}")
+async def get_payment_session(session_id: str):
+    payment = await db.payments.find_one({'stripe_session_id': session_id}, {'_id': 0})
+    if not payment:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Payment session not found.")
+    return payment
+
+@api_router.post("/stripe/webhook")
+async def stripe_webhook(request: Request):
+    if not STRIPE_WEBHOOK_SECRET:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Stripe webhook not configured.")
+    payload = await request.body()
+    signature = request.headers.get('stripe-signature', '')
+    try:
+        event = stripe.Webhook.construct_event(payload, signature, STRIPE_WEBHOOK_SECRET)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid webhook payload.")
+    except stripe.SignatureVerificationError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid webhook signature.")
+
+    event_type = event.get('type')
+    obj = event.get('data', {}).get('object', {})
+    if event_type == 'checkout.session.completed':
+        session_id = obj.get('id')
+        payment_intent = obj.get('payment_intent')
+        await db.payments.update_one({'stripe_session_id': session_id}, {'$set': {'status': 'paid', 'stripe_payment_intent_id': payment_intent, 'paid_at': datetime.utcnow(), 'updated_at': datetime.utcnow()}})
+    elif event_type == 'checkout.session.expired':
+        await db.payments.update_one({'stripe_session_id': obj.get('id')}, {'$set': {'status': 'expired', 'updated_at': datetime.utcnow()}})
+    elif event_type == 'payment_intent.payment_failed':
+        payment_id = obj.get('metadata', {}).get('novarch_payment_id')
+        if payment_id:
+            await db.payments.update_one({'id': payment_id}, {'$set': {'status': 'failed', 'updated_at': datetime.utcnow()}})
+    return {'received': True}
 
 @api_router.post("/chat", response_model=ChatResponse)
 async def chat_with_novarch(request: ChatRequest):
@@ -225,6 +318,8 @@ app.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=ALLOWED
 async def startup_db_client():
     await db.subscribers.create_index([("email", 1), ("purpose", 1)], unique=True)
     await db.subscribers.create_index("referral_code")
+    await db.payments.create_index("stripe_session_id", unique=True)
+    await db.payments.create_index("id", unique=True)
     logger.info("Database indexes created")
 
 @app.on_event("shutdown")
